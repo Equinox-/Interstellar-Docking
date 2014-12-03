@@ -12,11 +12,13 @@
 #include <stddef.h>
 #include "vecmath.h"
 #include "matmath.h"
+#include "particle.h"
 #include <stdio.h>
 
 class Ship {
 private:
 	static const int CONTROL_GROUP_COUNT = 12;
+	static const int PARTICLE_COUNT = 10000;
 
 	mat4 rotMatrix, rotInverse;
 	vec3 rot, radVel;
@@ -33,6 +35,10 @@ private:
 	vec3 *thrusterPos;
 	vec3 *thrusterDir;
 	float *thrusterPower;
+
+	// Particle system
+	Particle particles[PARTICLE_COUNT];
+	int particleHead;
 
 	// Control groups
 	uint32_t *controlGroups[CONTROL_GROUP_COUNT];

@@ -33,6 +33,11 @@ Ship::Ship(const char *fname) {
 	thrusterDir = NULL;
 	thrusterPos = NULL;
 
+	// Zero particles
+	particleHead = 0;
+	for (uint32_t i = 0; i < PARTICLE_COUNT; i++)
+		particles[i].end = -1;
+
 	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++)
 		controlGroups[i] = NULL;
 
@@ -167,12 +172,20 @@ void Ship::render() {
 				thrusterPos[t].z + drawMag * thrusterDir[t].z);
 	}
 	glEnd();
-	glPopAttrib();
 	glPopMatrix();
+
+	glBegin(GL_POINTS);
+	const float ctime = glfwGetTime();
+	for (uint32_t i = 0; i < PARTICLE_COUNT; i++)
+		if (particles[i].end > ctime)
+			particle_render(particles[i]);
+	glEnd();
+	glPopAttrib();
 }
 
 void Ship::update() {
 	const double delta = getDelta();
+	const float ctime = glfwGetTime();
 
 	// All da others
 	float mag;
@@ -180,10 +193,25 @@ void Ship::update() {
 	rotMatrix = mag == 0 ? mat4_identity() : mat4_axis_angle(mag, axis);
 	rotInverse = mat4_invert(rotMatrix);
 	for (uint32_t t = 0; t < thrusterCount; t++) {
-		vel = vec3_lincom(vel, 1, mat4_multiply(rotMatrix, thrusterDir[t]),
-				thrusterPower[t] / mass);
-		radVel = vec3_lincom(radVel, 1, mat4_multiply(rotMatrix, thrusterAxis[t]),
+		const vec3 patchDir = mat4_multiply(rotMatrix, thrusterDir[t]);
+		vel = vec3_lincom(vel, 1, patchDir, thrusterPower[t] / mass);
+		radVel = vec3_lincom(radVel, 1,
+				mat4_multiply(rotMatrix, thrusterAxis[t]),
 				thrusterPower[t] * radialThrustCoeff[t]);
+
+		if (thrusterPower[t] > 0) {
+			particles[particleHead].pos = vec3_lincom(pos, -1,
+					mat4_multiply(rotMatrix, thrusterPos[t]), 1);
+			particles[particleHead].vel = vec3_lincom(vel, -1, patchDir,
+					thrusterPower[t]);
+			particles[particleHead].begin = ctime;
+			particles[particleHead].end = ctime + 25;
+			particles[particleHead].color.x = particles[particleHead].color.y =
+					particles[particleHead].color.z = 1;
+			particleHead++;
+			if (particleHead >= PARTICLE_COUNT)
+				particleHead = 0;
+		}
 	}
 
 	pos = vec3_lincom(pos, 1, vel, delta);

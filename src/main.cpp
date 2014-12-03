@@ -24,7 +24,7 @@ void windowResized(GLFWwindow* win, int width, int height) {
 
 double delta;
 
-const int groupCTL[] = { GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_W, GLFW_KEY_S,
+const int groupCTL[] = { GLFW_KEY_D, GLFW_KEY_A, GLFW_KEY_W, GLFW_KEY_S,
 GLFW_KEY_Q, GLFW_KEY_E, GLFW_KEY_J, GLFW_KEY_L, GLFW_KEY_I, GLFW_KEY_K,
 GLFW_KEY_U, GLFW_KEY_O };
 
@@ -44,12 +44,14 @@ int main(int argc, char ** argv) {
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
-	glEnable(GL_LIGHTING);
+//	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glfwSetTime(0);
+	double prevLoop = 0;
+
 	while (!glfwWindowShouldClose(win)) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -64,8 +66,9 @@ int main(int argc, char ** argv) {
 		cam.process(win);
 		glfwSwapBuffers(win);
 
-		delta = glfwGetTime();
-		glfwSetTime(0);
+		delta = glfwGetTime() - prevLoop;
+		prevLoop = glfwGetTime();
+
 		endurance.zeroThrusters();
 		for (uint32_t c = 0; c < 12; c++) {
 			if (glfwGetKey(win, groupCTL[c])) {
