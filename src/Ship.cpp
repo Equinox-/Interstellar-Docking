@@ -12,9 +12,12 @@
 #include <GL/gl.h>
 #include "stlLoader.h"
 #include "istime.h"
+#include "matmath.h"
 #include <string.h>
 
 Ship::Ship(const char *fname) {
+	rotMatrix = mat4_identity();
+	rotInverse = mat4_identity();
 	rot.x = rot.y = rot.z = 0;
 	radVel.x = radVel.y = radVel.z = 0;
 
@@ -22,13 +25,16 @@ Ship::Ship(const char *fname) {
 	vel.x = vel.y = vel.z = 0;
 
 	centerOfMen.x = centerOfMen.y = centerOfMen.z = 0;
-	thrustCoeff = NULL;
+	radialThrustCoeff = NULL;
 	mass = 0;
 
 	// Zero Thrusters
 	thrusterCount = 0;
 	thrusterDir = NULL;
 	thrusterPos = NULL;
+
+	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++)
+		controlGroups[i] = NULL;
 
 	// Load Mesh
 	tris = loadSTL_File(fname, &trisCount);
@@ -38,24 +44,29 @@ Ship::Ship(const char *fname) {
 	strcat(thrName, ".thr");
 	loadThrusters(thrName);
 	computePhysParams();
+	printf("%s\t%f,%f,%f\n", fname, centerOfMen.x, centerOfMen.y,
+			centerOfMen.z);
 }
 
 Ship::~Ship() {
 	if (tris != NULL)
 		free(tris);
-	if (thrustCoeff != NULL)
-		free(thrustCoeff);
+	if (radialThrustCoeff != NULL)
+		free(radialThrustCoeff);
 	if (thrusterDir != NULL)
 		free(thrusterDir);
 	if (thrusterPos != NULL)
 		free(thrusterPos);
+	if (thrusterAxis != NULL)
+		free(thrusterAxis);
+	if (thrusterPower != NULL)
+		free(thrusterPower);
+	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++)
+		if (controlGroups[i] != NULL)
+			free(controlGroups[i]);
 }
 
 void Ship::loadThrusters(const char *thrName) {
-	if (thrusterDir != NULL)
-		free(thrusterDir);
-	if (thrusterPos != NULL)
-		free(thrusterPos);
 	FILE *thr = fopen(thrName, "r");
 	if (thr == NULL)
 		return;
@@ -68,6 +79,15 @@ void Ship::loadThrusters(const char *thrName) {
 		fscanf(thr, "%f %f %f\t%f %f %f\n", &thrusterPos[t].x,
 				&thrusterPos[t].y, &thrusterPos[t].z, &thrusterDir[t].x,
 				&thrusterDir[t].y, &thrusterDir[t].z);
+	}
+
+	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++) {
+		uint32_t count;
+		fscanf(thr, "%u", &count);
+		controlGroups[i] = (uint32_t*) malloc(sizeof(uint32_t) * (count + 1));
+		controlGroups[i][0] = count;
+		for (uint32_t j = 0; j < count; j++)
+			fscanf(thr, "%u", &controlGroups[i][1 + j]);
 	}
 
 	fclose(thr);
@@ -88,10 +108,10 @@ void Ship::computePhysParams() {
 	centerOfMen = vec3_multiply(centerOfMen, 1.0f / mass);
 
 	// Recording ALL DA MOMENTS
-	thrustCoeff = new float[thrusterCount];
+	radialThrustCoeff = new float[thrusterCount];
 	thrusterAxis = new vec3[thrusterCount];
 	for (uint32_t t = 0; t < thrusterCount; t++) {
-		thrustCoeff[t] = 0;
+		radialThrustCoeff[t] = 0;
 		// Compute the thrust axis
 		float torqueMag;
 		thrusterAxis[t] = vec3_normalize(
@@ -109,19 +129,16 @@ void Ship::computePhysParams() {
 					vec3_lincom(centerOfMen, 1, p, -1,
 							vec3_multiply(thrusterAxis[t],
 									vec3_dot(aMinP, thrusterAxis[t])), -1));
-			thrustCoeff[t] += partialMass * r2;
+			radialThrustCoeff[t] += partialMass * r2;
 		}
-		thrustCoeff[t] = torqueMag / thrustCoeff[t];
+		radialThrustCoeff[t] = torqueMag / radialThrustCoeff[t];
 	}
 }
 
 void Ship::render() {
 	glPushMatrix();
-	glTranslatef(pos.x, pos.y, pos.z);
-
-	float mag;
-	vec3 axis = vec3_normalize(rot, &mag);
-	glRotatef(mag * 180.0f / M_PI, axis.x, axis.y, axis.z);
+	glTranslatef(-pos.x, -pos.y, -pos.z);
+	glMultMatrixf(rotMatrix.data);
 
 	glTranslatef(-centerOfMen.x, -centerOfMen.y, -centerOfMen.z);
 
@@ -135,17 +152,22 @@ void Ship::render() {
 	}
 	glEnd();
 
-// Render thrusters
+	// Debug
+	glPushAttrib(GL_LIGHTING);
+	// Render thrusters
+	glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
 	for (uint32_t t = 0; t < thrusterCount; t++) {
 		glColor3f(0, 1, 0);
 		glVertex3f(thrusterPos[t].x, thrusterPos[t].y, thrusterPos[t].z);
 		glColor3f(1, 0, 0);
-		glVertex3f(thrusterPos[t].x + thrusterDir[t].x,
-				thrusterPos[t].y + thrusterDir[t].y,
-				thrusterPos[t].z + thrusterDir[t].z);
+		const float drawMag = thrusterPower[t];
+		glVertex3f(thrusterPos[t].x + drawMag * thrusterDir[t].x,
+				thrusterPos[t].y + drawMag * thrusterDir[t].y,
+				thrusterPos[t].z + drawMag * thrusterDir[t].z);
 	}
 	glEnd();
+	glPopAttrib();
 	glPopMatrix();
 }
 
@@ -153,10 +175,15 @@ void Ship::update() {
 	const double delta = getDelta();
 
 	// All da others
+	float mag;
+	vec3 axis = vec3_normalize(rot, &mag);
+	rotMatrix = mag == 0 ? mat4_identity() : mat4_axis_angle(mag, axis);
+	rotInverse = mat4_invert(rotMatrix);
 	for (uint32_t t = 0; t < thrusterCount; t++) {
-		vel = vec3_lincom(vel, 1, thrusterDir[t], thrusterPower[t] / mass);
-		radVel = vec3_lincom(radVel, 1, thrusterAxis[t],
-				thrusterPower[t] * thrustCoeff[t]);
+		vel = vec3_lincom(vel, 1, mat4_multiply(rotMatrix, thrusterDir[t]),
+				thrusterPower[t] / mass);
+		radVel = vec3_lincom(radVel, 1, mat4_multiply(rotMatrix, thrusterAxis[t]),
+				thrusterPower[t] * radialThrustCoeff[t]);
 	}
 
 	pos = vec3_lincom(pos, 1, vel, delta);

@@ -5,10 +5,19 @@ typedef union {
 	struct {
 		float x, y, z;
 	};
+	float comp[3];
 	char raw[12];
 } vec3;
 
 #include <math.h>
+
+inline vec3 vec3_make(const float x, const float y, const float z) {
+	vec3 v;
+	v.x = x;
+	v.y = y;
+	v.z = z;
+	return v;
+}
 
 inline vec3 vec3_add(vec3 a, const vec3 &b) {
 	a.x += b.x;

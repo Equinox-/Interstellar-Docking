@@ -24,7 +24,12 @@ void windowResized(GLFWwindow* win, int width, int height) {
 
 double delta;
 
+const int groupCTL[] = { GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_W, GLFW_KEY_S,
+GLFW_KEY_Q, GLFW_KEY_E, GLFW_KEY_J, GLFW_KEY_L, GLFW_KEY_I, GLFW_KEY_K,
+GLFW_KEY_U, GLFW_KEY_O };
+
 int main(int argc, char ** argv) {
+
 	delta = 0;
 	glfwInit();
 	GLFWwindow *win = glfwCreateWindow(800, 800, "Docking", NULL, NULL);
@@ -34,15 +39,17 @@ int main(int argc, char ** argv) {
 	Camera cam;
 
 	Ship endurance = Ship("data/endurance_wheel.stl");
-	//enduranceRANGER.stl
+//	Ship ranger = Ship("data/endurance_ranger.stl");
+//	ranger.pose(vec3_make(0, 0, -3.0f), vec3_make(-M_PI / 2.0f, 0, 0));
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
-//	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glfwSetTime(0);
 	while (!glfwWindowShouldClose(win)) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -50,6 +57,7 @@ int main(int argc, char ** argv) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		endurance.render();
+//		ranger.render();
 
 		glFlush();
 		glfwPollEvents();
@@ -58,20 +66,14 @@ int main(int argc, char ** argv) {
 
 		delta = glfwGetTime();
 		glfwSetTime(0);
-		if (glfwGetKey(win, GLFW_KEY_A)) {
-			endurance.zeroThrusters();
-			endurance.setThruster(0, 1);
-			endurance.setThruster(5, 1);
-			endurance.setThruster(12, 1);
-			endurance.setThruster(9, 1);
-		} else if (glfwGetKey(win, GLFW_KEY_D)) {
-			endurance.zeroThrusters();
-			endurance.setThruster(1, 1);
-			endurance.setThruster(4, 1);
-			endurance.setThruster(13, 1);
-			endurance.setThruster(8, 1);
-		} else {
-			endurance.zeroThrusters();
+		endurance.zeroThrusters();
+		for (uint32_t c = 0; c < 12; c++) {
+			if (glfwGetKey(win, groupCTL[c])) {
+				endurance.setGroup(c, 1);
+			}
+		}
+		if (glfwGetKey(win, GLFW_KEY_SPACE)) {
+			endurance.worldThrust(vec3_make(1, 0, 0));
 		}
 		endurance.update();
 	}

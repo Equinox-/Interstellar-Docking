@@ -3,6 +3,7 @@
 #include "vecmath.h"
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 mat4 mat4_identity() {
 	mat4 res;
@@ -26,6 +27,14 @@ mat4 mat4_multiply(const mat4 &a, const mat4 &b) {
 			}
 		}
 	}
+	return res;
+}
+
+vec3 mat4_multiply(const mat4 &a, const vec3 &v) {
+	vec3 res;
+	res.x = a.data[0] * v.x + a.data[4] * v.y + a.data[8] * v.z + a.data[12];
+	res.y = a.data[1] * v.x + a.data[5] * v.y + a.data[9] * v.z + a.data[13];
+	res.z = a.data[2] * v.x + a.data[6] * v.y + a.data[10] * v.z + a.data[14];
 	return res;
 }
 
@@ -62,6 +71,134 @@ mat4 mat4_translation(const vec3 &a) {
 	res.data[12] = a.x;
 	res.data[13] = a.y;
 	res.data[14] = a.z;
+	return res;
+}
+
+mat4 mat4_invert(const mat4 &m) {
+	mat4 res;
+	res.data[0] = m.data[5] * m.data[10] * m.data[15]
+			- m.data[5] * m.data[11] * m.data[14]
+			- m.data[9] * m.data[6] * m.data[15]
+			+ m.data[9] * m.data[7] * m.data[14]
+			+ m.data[13] * m.data[6] * m.data[11]
+			- m.data[13] * m.data[7] * m.data[10];
+
+	res.data[4] = -m.data[4] * m.data[10] * m.data[15]
+			+ m.data[4] * m.data[11] * m.data[14]
+			+ m.data[8] * m.data[6] * m.data[15]
+			- m.data[8] * m.data[7] * m.data[14]
+			- m.data[12] * m.data[6] * m.data[11]
+			+ m.data[12] * m.data[7] * m.data[10];
+
+	res.data[8] = m.data[4] * m.data[9] * m.data[15]
+			- m.data[4] * m.data[11] * m.data[13]
+			- m.data[8] * m.data[5] * m.data[15]
+			+ m.data[8] * m.data[7] * m.data[13]
+			+ m.data[12] * m.data[5] * m.data[11]
+			- m.data[12] * m.data[7] * m.data[9];
+
+	res.data[12] = -m.data[4] * m.data[9] * m.data[14]
+			+ m.data[4] * m.data[10] * m.data[13]
+			+ m.data[8] * m.data[5] * m.data[14]
+			- m.data[8] * m.data[6] * m.data[13]
+			- m.data[12] * m.data[5] * m.data[10]
+			+ m.data[12] * m.data[6] * m.data[9];
+
+	res.data[1] = -m.data[1] * m.data[10] * m.data[15]
+			+ m.data[1] * m.data[11] * m.data[14]
+			+ m.data[9] * m.data[2] * m.data[15]
+			- m.data[9] * m.data[3] * m.data[14]
+			- m.data[13] * m.data[2] * m.data[11]
+			+ m.data[13] * m.data[3] * m.data[10];
+
+	res.data[5] = m.data[0] * m.data[10] * m.data[15]
+			- m.data[0] * m.data[11] * m.data[14]
+			- m.data[8] * m.data[2] * m.data[15]
+			+ m.data[8] * m.data[3] * m.data[14]
+			+ m.data[12] * m.data[2] * m.data[11]
+			- m.data[12] * m.data[3] * m.data[10];
+
+	res.data[9] = -m.data[0] * m.data[9] * m.data[15]
+			+ m.data[0] * m.data[11] * m.data[13]
+			+ m.data[8] * m.data[1] * m.data[15]
+			- m.data[8] * m.data[3] * m.data[13]
+			- m.data[12] * m.data[1] * m.data[11]
+			+ m.data[12] * m.data[3] * m.data[9];
+
+	res.data[13] = m.data[0] * m.data[9] * m.data[14]
+			- m.data[0] * m.data[10] * m.data[13]
+			- m.data[8] * m.data[1] * m.data[14]
+			+ m.data[8] * m.data[2] * m.data[13]
+			+ m.data[12] * m.data[1] * m.data[10]
+			- m.data[12] * m.data[2] * m.data[9];
+
+	res.data[2] = m.data[1] * m.data[6] * m.data[15]
+			- m.data[1] * m.data[7] * m.data[14]
+			- m.data[5] * m.data[2] * m.data[15]
+			+ m.data[5] * m.data[3] * m.data[14]
+			+ m.data[13] * m.data[2] * m.data[7]
+			- m.data[13] * m.data[3] * m.data[6];
+
+	res.data[6] = -m.data[0] * m.data[6] * m.data[15]
+			+ m.data[0] * m.data[7] * m.data[14]
+			+ m.data[4] * m.data[2] * m.data[15]
+			- m.data[4] * m.data[3] * m.data[14]
+			- m.data[12] * m.data[2] * m.data[7]
+			+ m.data[12] * m.data[3] * m.data[6];
+
+	res.data[10] = m.data[0] * m.data[5] * m.data[15]
+			- m.data[0] * m.data[7] * m.data[13]
+			- m.data[4] * m.data[1] * m.data[15]
+			+ m.data[4] * m.data[3] * m.data[13]
+			+ m.data[12] * m.data[1] * m.data[7]
+			- m.data[12] * m.data[3] * m.data[5];
+
+	res.data[14] = -m.data[0] * m.data[5] * m.data[14]
+			+ m.data[0] * m.data[6] * m.data[13]
+			+ m.data[4] * m.data[1] * m.data[14]
+			- m.data[4] * m.data[2] * m.data[13]
+			- m.data[12] * m.data[1] * m.data[6]
+			+ m.data[12] * m.data[2] * m.data[5];
+
+	res.data[3] = -m.data[1] * m.data[6] * m.data[11]
+			+ m.data[1] * m.data[7] * m.data[10]
+			+ m.data[5] * m.data[2] * m.data[11]
+			- m.data[5] * m.data[3] * m.data[10]
+			- m.data[9] * m.data[2] * m.data[7]
+			+ m.data[9] * m.data[3] * m.data[6];
+
+	res.data[7] = m.data[0] * m.data[6] * m.data[11]
+			- m.data[0] * m.data[7] * m.data[10]
+			- m.data[4] * m.data[2] * m.data[11]
+			+ m.data[4] * m.data[3] * m.data[10]
+			+ m.data[8] * m.data[2] * m.data[7]
+			- m.data[8] * m.data[3] * m.data[6];
+
+	res.data[11] = -m.data[0] * m.data[5] * m.data[11]
+			+ m.data[0] * m.data[7] * m.data[9]
+			+ m.data[4] * m.data[1] * m.data[11]
+			- m.data[4] * m.data[3] * m.data[9]
+			- m.data[8] * m.data[1] * m.data[7]
+			+ m.data[8] * m.data[3] * m.data[5];
+
+	res.data[15] = m.data[0] * m.data[5] * m.data[10]
+			- m.data[0] * m.data[6] * m.data[9]
+			- m.data[4] * m.data[1] * m.data[10]
+			+ m.data[4] * m.data[2] * m.data[9]
+			+ m.data[8] * m.data[1] * m.data[6]
+			- m.data[8] * m.data[2] * m.data[5];
+
+	float det = m.data[0] * res.data[0] + m.data[1] * res.data[4]
+			+ m.data[2] * res.data[8] + m.data[3] * res.data[12];
+
+	if (det == 0) {
+		printf("Invert det=0 mat\n");
+		exit(1);
+	}
+	det = 1.0 / det;
+
+	for (int i = 0; i < 16; i++)
+		res.data[i] *= det;
 	return res;
 }
 

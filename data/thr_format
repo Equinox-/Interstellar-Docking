@@ -1,0 +1,17 @@
+thruster count
+x y z	fx fy fz
+...
+control groups:
+thrustCounter thID thID
+posX
+negX
+posY
+negY
+posZ
+negZ
+posXR
+negXR
+posYR
+negYR
+posZR
+negZR
