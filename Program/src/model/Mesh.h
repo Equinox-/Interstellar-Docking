@@ -6,7 +6,9 @@
 
 #include "../math/vecmath.h"
 #include "../math/matmath.h"
+#include "Material.h"
 
+class Texture;
 class Mesh {
 	friend class Node;
 private:
@@ -17,6 +19,10 @@ private:
 	uint32_t *indexData;
 	uint32_t indexCount, vertexCount;
 
+	uint32_t material;
+	Material *materialRef;
+	Texture **texTable;
+
 	float mass;
 	vec3 com;
 	mat4 inertiaTensor;
@@ -25,6 +31,7 @@ public:
 	Mesh(FILE *io);
 	virtual ~Mesh();
 	void render();
+	void updateMaterialRef(Material *matTable, Texture **texTable);
 };
 
 #endif /* MESH_H_ */

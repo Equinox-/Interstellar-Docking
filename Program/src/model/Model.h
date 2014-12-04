@@ -12,12 +12,21 @@
 #include "../math/matmath.h"
 #include "../math/vecmath.h"
 #include "Node.h"
+#include "Material.h"
 
 class Mesh;
+class Texture;
 class Model {
 private:
+	uint32_t textureCount;
+	Texture **textureTable;
+
+	uint32_t materialCount;
+	Material *materialTable;
+
 	uint32_t nodeCount;
 	Node **nodeTable;
+
 	uint32_t meshCount;
 	Mesh **meshTable;
 	Node *root;

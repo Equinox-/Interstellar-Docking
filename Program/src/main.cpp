@@ -1,3 +1,4 @@
+#include "shaders.h"
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <math.h>
@@ -30,7 +31,7 @@ GLFW_KEY_Q, GLFW_KEY_E, GLFW_KEY_J, GLFW_KEY_L, GLFW_KEY_I, GLFW_KEY_K,
 GLFW_KEY_U, GLFW_KEY_O };
 
 const float lightDir[] = { -1, -1, -1 };
-const float lightColor[] = { 0.25f, 0.25f, 0.25f };
+const float lightColor[] = { 1, 1, 1, 1 };
 const float ambientColor[] = { 0.1f, 0.1f, 0.1f };
 
 int main(int argc, char ** argv) {
@@ -43,21 +44,22 @@ int main(int argc, char ** argv) {
 	glfwSetWindowSizeCallback(win, &windowResized);
 	windowResized(win, 800, 800);
 	Camera cam;
-	Ship endurance =
-			Ship(
-					"/home/localadmin/Programming/cpp-workspace/Interstellar Docking/JSONRepacker/endurance.pack");
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
-	glEnable(GL_LIGHTING);
+//	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	glEnable(GL_BLEND);
+//	glEnable(GL_BLEND);
 	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	Ship endurance = Ship(
+			"/home/localadmin/Downloads/endurance-rip/endurance.pack");
+
 	glfwSetTime(0);
 	double prevLoop = 0;
-
+	glewInit();
+	useProgram();
 	while (!glfwWindowShouldClose(win)) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();

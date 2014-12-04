@@ -13,11 +13,13 @@ import org.json.JSONTokener;
 
 public class Parser {
 	static File content = new File("/home/localadmin/Downloads/endurance-rip/");
-	static JSONObject root, buffers, materials, meshes, nodes;
+	static JSONObject root, buffers, materials, meshes, nodes, images;
 	static DataOutputStream dout;
 
 	static Map<String, byte[]> bufferData = new HashMap<String, byte[]>();
+	static Map<String, Integer> materialMapping = new HashMap<String, Integer>();
 	static Map<String, Integer> meshMapping = new HashMap<String, Integer>();
+	static Map<String, Integer> imageMapping = new HashMap<String, Integer>();
 
 	private static byte[] getBuffer(String s) throws Exception {
 		byte[] data = bufferData.get(s);
@@ -40,17 +42,100 @@ public class Parser {
 		dout.write(v >> 24 & 0xFF);
 	}
 
+	private static void writeFloatLE(float f) throws IOException {
+		writeIntLE(Float.floatToIntBits(f));
+	}
+
 	public static void main(String[] args) throws Exception {
 		root = new JSONObject(new JSONTokener(new FileReader(new File(content,
 				"endurance_png_medium.json"))));
 		dout = new DataOutputStream(new FileOutputStream("endurance.pack"));
 		buffers = root.getJSONObject("buffers");
+		images = root.getJSONObject("images");
 		materials = root.getJSONObject("materials");
 		meshes = root.getJSONObject("meshes");
 		nodes = root.getJSONObject("nodes");
+		writeImages();
+		writeMaterials();
 		writeMeshes();
 		writeNodes();
 		dout.close();
+	}
+
+	private static void writeImages() throws IOException {
+		writeIntLE(images.length());
+		int i = 1;
+		for (String key : images.keySet()) {
+			imageMapping.put(key, i++);
+			// write string
+			String path = images.getJSONObject(key).getString("path");
+			String name = path.contains("/") ? path.substring(
+					path.lastIndexOf('/') + 1, path.length()) : path;
+			writeIntLE(name.length());
+			for (int j = 0; j < name.length(); j++)
+				dout.writeByte(name.charAt(j) & 0xFF);
+		}
+	}
+
+	private static void writeColor(JSONArray a, float opac) throws IOException {
+		writeFloatLE((float) a.getDouble(0));
+		writeFloatLE((float) a.getDouble(1));
+		writeFloatLE((float) a.getDouble(2));
+		if (a.length() >= 4)
+			writeFloatLE((float) a.getDouble(3) * opac);
+		else
+			writeFloatLE(opac);
+	}
+
+	private static int filterInt(String s) {
+		if (s.equals("LINEAR"))
+			return 0;
+		else
+			throw new RuntimeException();
+	}
+
+	private static int wrapInt(String s) {
+		if (s.equals("REPEAT"))
+			return 0;
+		else
+			throw new RuntimeException();
+	}
+
+	private static void writeSourceData(JSONObject o, String field, float opac)
+			throws IOException {
+		if (o.has(field + "Texture")) {
+			JSONObject t = o.getJSONObject(field + "Texture");
+			writeIntLE(imageMapping.get(t.getString("image")));
+			writeFloatLE(filterInt(t.getString("magFilter")));
+			writeFloatLE(filterInt(t.getString("minFilter")));
+			writeFloatLE(wrapInt(t.getString("wrapS")));
+			writeFloatLE(wrapInt(t.getString("wrapT")));
+		} else if (o.has(field + "Color")) {
+			writeIntLE(0);
+			writeColor(o.getJSONArray(field + "Color"), opac);
+		}
+	}
+
+	private static void writeMaterials() throws Exception {
+		writeIntLE(materials.length());
+		int i = 1;
+		for (String key : materials.keySet()) {
+			materialMapping.put(key, i++);
+			JSONObject matl = materials.getJSONObject(key);
+			JSONObject lmb = matl.getJSONObject("techniques")
+					.getJSONObject("lambert1").getJSONObject("parameters");
+
+			float opacity = lmb.has("opacityColor") ? (float) lmb.getJSONArray(
+					"opacityColor").getDouble(0) : 1;
+			writeSourceData(lmb, "ambient", opacity);
+			writeSourceData(lmb, "diffuse", opacity);
+			writeSourceData(lmb, "emission", opacity);
+			writeIntLE(lmb.getInt("indexOfRefraction"));
+			writeSourceData(lmb, "reflective", opacity);
+			writeFloatLE((float) lmb.getDouble("reflectivity"));
+			writeFloatLE((float) lmb.getDouble("shininess"));
+			writeSourceData(lmb, "specular", opacity);
+		}
 	}
 
 	private static void writeMeshes() throws Exception {
@@ -124,6 +209,15 @@ public class Parser {
 			for (int i = 0; i < count; i++) {
 				dout.write(indexBuffer, offset + i * 4, 4);
 			}
+		}
+
+		// Material data
+		{
+			if (primitives.has("material"))
+				writeIntLE(materialMapping
+						.get(primitives.getString("material")));
+			else
+				writeIntLE(0);
 		}
 	}
 
