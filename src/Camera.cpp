@@ -7,7 +7,7 @@
 Camera *Camera::active = NULL;
 
 Camera::Camera() {
-	offset = -5.0f;
+	offset = -50.0f;
 	pose = mat4_identity();
 	cursorX = cursorY = 0;
 	scrollRegistered = false;
@@ -57,8 +57,8 @@ void Camera::process(GLFWwindow *win) {
 			|| glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_MIDDLE)) {
 		// Move
 		vec3 trans;
-		trans.x = deltaX / 100.0f;
-		trans.y = -deltaY / 100.0f;
+		trans.x = deltaX / 100.0f * (offset / -5.0f);
+		trans.y = -deltaY / 100.0f * (offset / -5.0f);
 		trans.z = 0;
 		if (deltaY || deltaX)
 			pose = mat4_multiply(pose, mat4_translation(trans));

@@ -206,7 +206,7 @@ void Ship::update() {
 							vec3_lincom(thrusterPos[t], 1, centerOfMen, -1)),
 					1);
 			particles[particleHead].vel = vec3_lincom(vel, 1, patchDir,
-					thrusterPower[t] / PARTICLE_MASS);
+					delta * thrusterPower[t] / PARTICLE_MASS);
 			particles[particleHead].begin = ctime;
 			particles[particleHead].end = ctime + PARTICLE_LIFE;
 			particles[particleHead].color.x = 1;
