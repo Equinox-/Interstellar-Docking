@@ -7,19 +7,17 @@
 
 mat4 mat4_identity() {
 	mat4 res;
-	for (int i = 0; i < 16; i++)
-		res.data[i] = 0.0f;
+	for (uint8_t i = 0; i < 16; i++)
+		res.data[i] = 0;
 
-	res.data[0] = 1.0f;
-	res.data[5] = 1.0f;
-	res.data[10] = 1.0f;
-	res.data[15] = 1.0f;
+	res.data[0] = res.data[5] = res.data[10] = res.data[15] = 1.0f;
 	return res;
 }
 
 mat4 mat4_multiply(const mat4 &a, const mat4 &b) {
 	mat4 res;
-	memset(res.data, 0, sizeof(float) * 16);
+	for (uint8_t i = 0; i < 16; i++)
+		res.data[i] = 0;
 	for (int k = 0; k <= 12; k += 4) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0, bCount = 0; j < 4; j++, bCount += 4) {
@@ -204,7 +202,71 @@ mat4 mat4_invert(const mat4 &m) {
 
 void mat4_print(const mat4 &mat) {
 	for (int i = 0; i < 4; i++) {
-		printf("%0.5f %0.5f %0.5f %0.5f\n", mat.data[i], mat.data[i + 4],
+		printf("%0.10f %0.10f %0.10f %0.10f\n", mat.data[i], mat.data[i + 4],
 				mat.data[i + 8], mat.data[i + 12]);
 	}
+}
+
+void mat4_add_inertia_tensor(mat4 &mat, const float mass, const vec3 &com) {
+	mat.data[0] += mass * (com.y * com.y + com.z * com.z);
+	mat.data[5] += mass * (com.x * com.x + com.z * com.z);
+	mat.data[10] += mass * (com.x * com.x + com.y * com.y);
+	mat.data[4] += -mass * com.x * com.y;
+	mat.data[8] += -mass * com.x * com.z;
+	mat.data[9] += -mass * com.y * com.z;
+
+	// Keep it symmetric
+	mat.data[1] = mat.data[4];
+	mat.data[2] = mat.data[8];
+	mat.data[6] = mat.data[9];
+}
+
+mat4 mat4_transpose(const mat4 &mat) {
+	mat4 res = mat;
+	res.data[1] = mat.data[4];
+	res.data[2] = mat.data[8];
+	res.data[3] = mat.data[12];
+
+	res.data[6] = mat.data[9];
+	res.data[7] = mat.data[13];
+
+	res.data[11] = mat.data[14];
+
+	res.data[4] = mat.data[1];
+	res.data[8] = mat.data[2];
+	res.data[12] = mat.data[3];
+
+	res.data[9] = mat.data[6];
+	res.data[13] = mat.data[7];
+
+	res.data[14] = mat.data[11];
+	return res;
+}
+
+mat4 mat4_skewsym(const vec3 &v) {
+	mat4 res;
+	for (uint8_t i = 0; i < 16; i++)
+		res.data[i] = 0;
+	res.data[15] = 1;
+	res.data[1] = v.z;
+	res.data[2] = -v.y;
+	res.data[4] = -v.z;
+	res.data[6] = v.x;
+	res.data[8] = v.y;
+	res.data[9] = -v.x;
+	return res;
+}
+
+mat4 mat4_from_quat(const quat &q) {
+	mat4 mat = mat4_identity();
+	mat.data[0] = 1 - 2 * q.y * q.y - 2 * q.z * q.z;
+	mat.data[4] = 2 * q.x * q.y - 2 * q.z * q.w;
+	mat.data[8] = 2 * q.x * q.z + 2 * q.y * q.w;
+	mat.data[1] = 2 * q.x * q.y + 2 * q.z * q.w;
+	mat.data[5] = 1 - 2 * q.x * q.x - 2 * q.z * q.z;
+	mat.data[9] = 2 * q.y * q.z - 2 * q.x * q.w;
+	mat.data[2] = 2 * q.x * q.z - 2 * q.y * q.w;
+	mat.data[6] = 2 * q.y * q.z + 2 * q.x * q.w;
+	mat.data[10] = 1 - 2 * q.x * q.x - 2 * q.y * q.y;
+	return mat;
 }

@@ -11,6 +11,7 @@ vec3 *loadDAE_File(const char* fname, uint32_t *trisCount) {
 	memcpy(partName, fname, strlen(fname) + 1);
 	strcat(partName, "-vtx.bin");
 	FILE *vtx = fopen(partName, "r");
+	printf("%s\n", partName);
 
 	float bonus[3];
 	vec3 vertRaw[26266 * 2];

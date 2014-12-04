@@ -2,3 +2,6 @@ Debug/
 Release/
 .project
 .cproject
+*.class
+.classpath
+.settings/

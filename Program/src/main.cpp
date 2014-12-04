@@ -5,11 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "vecmath.h"
+#include "math/vecmath.h"
 #include "Camera.h"
 #include "Ship.h"
 
 #include "istime.h"
+#include "model/Model.h"
 
 #define HORIZ_FOV (45)
 
@@ -28,25 +29,30 @@ const int groupCTL[] = { GLFW_KEY_D, GLFW_KEY_A, GLFW_KEY_W, GLFW_KEY_S,
 GLFW_KEY_Q, GLFW_KEY_E, GLFW_KEY_J, GLFW_KEY_L, GLFW_KEY_I, GLFW_KEY_K,
 GLFW_KEY_U, GLFW_KEY_O };
 
+const float lightDir[] = { -1, -1, -1 };
+const float lightColor[] = { 0.25f, 0.25f, 0.25f };
+const float ambientColor[] = { 0.1f, 0.1f, 0.1f };
+
 int main(int argc, char ** argv) {
 
 	delta = 0;
 	glfwInit();
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	GLFWwindow *win = glfwCreateWindow(800, 800, "Docking", NULL, NULL);
 	glfwMakeContextCurrent(win);
 	glfwSetWindowSizeCallback(win, &windowResized);
 	windowResized(win, 800, 800);
 	Camera cam;
-
-	Ship endurance = Ship("data/endurance_wheel.stl");
-//	Ship ranger = Ship("data/endurance_ranger.stl");
-//	ranger.pose(vec3_make(0, 0, -3.0f), vec3_make(-M_PI / 2.0f, 0, 0));
+	Ship endurance =
+			Ship(
+					"/home/localadmin/Programming/cpp-workspace/Interstellar Docking/JSONRepacker/endurance.pack");
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_BLEND);
+	glEnable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glfwSetTime(0);
@@ -56,6 +62,9 @@ int main(int argc, char ** argv) {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 		cam.glApply();
+		glLightfv(GL_LIGHT0, GL_POSITION, lightDir);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
+		glLightModelfv(GL_AMBIENT, ambientColor);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		endurance.render();
@@ -72,11 +81,13 @@ int main(int argc, char ** argv) {
 		endurance.zeroThrusters();
 		for (uint32_t c = 0; c < 12; c++) {
 			if (glfwGetKey(win, groupCTL[c])) {
-				endurance.addGroup(c, 1);
+				endurance.addGroup(c, 0.05f);
 			}
 		}
 		if (glfwGetKey(win, GLFW_KEY_SPACE)) {
-			endurance.addWorldThrust(vec3_make(10, 0, 0));
+			endurance.addWorldThrust(vec3_make(0.5f, 0, 0));
+		} else if (glfwGetKey(win, GLFW_KEY_RIGHT_ALT)) {
+			endurance.addWorldThrust(vec3_make(-0.5f, 0, 0));
 		}
 		endurance.update();
 	}

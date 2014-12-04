@@ -1,6 +1,6 @@
 #ifndef CAMERA_H_
 #define CAMERA_H_
-#include "matmath.h"
+#include "math/matmath.h"
 
 
 struct GLFWwindow;

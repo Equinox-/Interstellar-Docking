@@ -3,7 +3,7 @@
 
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
-#include "vecmath.h"
+#include "math/vecmath.h"
 
 typedef struct {
 	vec3 color;

@@ -10,32 +10,29 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include "vecmath.h"
-#include "matmath.h"
+#include "math/vecmath.h"
+#include "math/matmath.h"
+#include "math/quatmath.h"
 #include "particle.h"
 #include <stdio.h>
+#include "model/Model.h"
 
 class Ship {
 private:
 	static const int CONTROL_GROUP_COUNT = 12;
 	static const int PARTICLE_COUNT = 10000;
-	static const float PARTICLE_MASS = 0.1f; //kg
+	static const float PARTICLE_MASS = 100.0f; //kg
 	static const float PARTICLE_LIFE = 5;
 
-	static const float AREA_DENSITY = 5; // 5kg/m^2
-
+	quat rot;
 	mat4 rotMatrix, rotInverse;
-	vec3 radVel;
-	vec3 pos, vel;
 
-	// Physics params
-	vec3 centerOfMen;
-	float *radialThrustCoeff;
-	float mass;
+	vec3 angularMomentum;
+	vec3 pos, linearMomentum;
 
 	// Thurster params
 	uint32_t thrusterCount;
-	vec3 *thrusterAxis;
+	vec3 *thrusterCross;
 	vec3 *thrusterPos;
 	vec3 *thrusterDir;
 	float *thrusterPower;
@@ -47,11 +44,9 @@ private:
 	// Control groups
 	uint32_t *controlGroups[CONTROL_GROUP_COUNT];
 
-	uint32_t trisCount;
-	vec3 *tris;
+	Model model;
 
 	void loadThrusters(const char *fname);
-	void computePhysParams();
 public:
 	Ship(const char *fname);
 	virtual ~Ship();
@@ -72,7 +67,7 @@ public:
 	}
 
 	inline void addWorldThrust(vec3 power) {
-		// World -> local
+//		 World -> local
 		vec3 lv = mat4_multiply(rotInverse, power);
 		for (uint8_t i = 0; i < 3; i++) {
 			addGroup(i * 2, (lv.comp[i] > 0) * lv.comp[i]);
