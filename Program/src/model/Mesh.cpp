@@ -38,7 +38,18 @@ void Mesh::render() {
 		glBindMaterial(materialRef);
 		if (materialRef->diffuse.imageID > 0) {
 			glEnable(GL_TEXTURE_2D);
+			glActiveTexture(GL_TEXTURE0);
 			texTable[materialRef->diffuse.imageID - 1]->bind();
+		}
+		if (materialRef->specular.imageID > 0) {
+			glEnable(GL_TEXTURE_2D);
+			glActiveTexture(GL_TEXTURE1);
+			texTable[materialRef->specular.imageID - 1]->bind();
+		}
+		if (materialRef->reflective.imageID > 0) {
+			glEnable(GL_TEXTURE_2D);
+			glActiveTexture(GL_TEXTURE2);
+			texTable[materialRef->reflective.imageID - 1]->bind();
 		}
 	}
 	glEnable(GL_VERTEX_ARRAY | GL_NORMAL_ARRAY | GL_TEXTURE_COORD_ARRAY);
