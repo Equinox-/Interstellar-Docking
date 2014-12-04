@@ -7,13 +7,12 @@
 
 #include "Ship.h"
 
-#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "istime.h"
-#include "daeLoader.h"
+#include "shaders.h"
 
 Ship::Ship(const char *fname) :
 		model(fname) {
@@ -101,6 +100,7 @@ void Ship::render() {
 	glColor3f(1, 1, 1);
 	model.render();
 
+	nouseProgram();
 	// Debug
 	glPushAttrib(GL_LIGHTING);
 	// Render thrusters

@@ -1,4 +1,5 @@
 #include "shaders.h"
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <math.h>
@@ -32,7 +33,7 @@ GLFW_KEY_U, GLFW_KEY_O };
 
 const float lightDir[] = { -1, -1, -1 };
 const float lightColor[] = { 1, 1, 1, 1 };
-const float ambientColor[] = { 0.1f, 0.1f, 0.1f };
+const float ambientColor[] = { 0.1f, 0.1f, 0.1f, 1 };
 
 int main(int argc, char ** argv) {
 
@@ -46,17 +47,14 @@ int main(int argc, char ** argv) {
 	Camera cam;
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_COLOR_MATERIAL);
-//	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-//	glEnable(GL_BLEND);
 	glEnable(GL_MULTISAMPLE);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Ship endurance = Ship(
 			"/home/localadmin/Downloads/endurance-rip/endurance.pack");
 
 	glfwSetTime(0);
+	glClearColor(1,1,1,1);
 	double prevLoop = 0;
 	glewInit();
 	useProgram();
@@ -69,6 +67,7 @@ int main(int argc, char ** argv) {
 		glLightModelfv(GL_AMBIENT, ambientColor);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		useProgram();
 		endurance.render();
 //		ranger.render();
 
