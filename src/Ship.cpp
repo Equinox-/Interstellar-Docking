@@ -7,31 +7,30 @@
 
 #include "Ship.h"
 
-#include <stddef.h>
-#include <stdlib.h>
 #include <GL/gl.h>
-#include "stlLoader.h"
-#include "istime.h"
-#include "matmath.h"
+#include <GLFW/glfw3.h>
+#include <stdlib.h>
 #include <string.h>
+
+#include "istime.h"
+#include "stlLoader.h"
 
 Ship::Ship(const char *fname) {
 	rotMatrix = mat4_identity();
 	rotInverse = mat4_identity();
-	rot.x = rot.y = rot.z = 0;
 	radVel.x = radVel.y = radVel.z = 0;
 
 	pos.x = pos.y = pos.z = 0;
 	vel.x = vel.y = vel.z = 0;
 
 	centerOfMen.x = centerOfMen.y = centerOfMen.z = 0;
-	radialThrustCoeff = NULL;
 	mass = 0;
 
 	// Zero Thrusters
 	thrusterCount = 0;
 	thrusterDir = NULL;
 	thrusterPos = NULL;
+	radialThrustCoeff = NULL;
 
 	// Zero particles
 	particleHead = 0;
@@ -49,8 +48,8 @@ Ship::Ship(const char *fname) {
 	strcat(thrName, ".thr");
 	loadThrusters(thrName);
 	computePhysParams();
-	printf("%s\t%f,%f,%f\n", fname, centerOfMen.x, centerOfMen.y,
-			centerOfMen.z);
+	printf("%s\tCOM: %f,%f,%f\tMass: %f\n", fname, centerOfMen.x, centerOfMen.y,
+			centerOfMen.z, mass);
 }
 
 Ship::~Ship() {
@@ -102,13 +101,13 @@ void Ship::computePhysParams() {
 	mass = 0;
 	centerOfMen.x = centerOfMen.y = centerOfMen.z = 0;
 	for (uint32_t t = 0; t < trisCount * 4; t += 4) {
-		float partialMass = vec3_tris_area(tris[t + 1], tris[t + 2],
-				tris[t + 3]);
-		vec3 partialCentroid = vec3_lincom(tris[t + 1], 1.0f / 3.0f,
+		const float partialMass = vec3_tris_area(tris[t + 1], tris[t + 2],
+				tris[t + 3]) * AREA_DENSITY;
+		const vec3 partialCentroid = vec3_lincom(tris[t + 1], 1.0f / 3.0f,
 				tris[t + 2], 1.0f / 3.0f, tris[t + 3], 1.0f / 3.0f);
 
 		mass += partialMass;
-		centerOfMen = vec3_lincom(centerOfMen, 1, partialCentroid, partialMass);
+		vec3_addto(centerOfMen, partialCentroid, partialMass);
 	}
 	centerOfMen = vec3_multiply(centerOfMen, 1.0f / mass);
 
@@ -126,12 +125,12 @@ void Ship::computePhysParams() {
 
 		for (uint32_t b = 0; b < trisCount * 4; b += 4) {
 			const float partialMass = vec3_tris_area(tris[b + 1], tris[b + 2],
-					tris[b + 3]);
-			const vec3 p = vec3_lincom(tris[b + 1], 1.0f / 3.0f, tris[b + 2],
-					1.0f / 3.0f, tris[b + 3], 1.0f / 3.0f);
-			const vec3 aMinP = vec3_lincom(centerOfMen, 1, p, -1);
+					tris[b + 3]) * AREA_DENSITY;
+			const vec3 partialCentroid = vec3_lincom(tris[b + 1], 1.0f / 3.0f,
+					tris[b + 2], 1.0f / 3.0f, tris[b + 3], 1.0f / 3.0f);
+			const vec3 aMinP = vec3_lincom(centerOfMen, 1, partialCentroid, -1);
 			const float r2 = vec3_mag2(
-					vec3_lincom(centerOfMen, 1, p, -1,
+					vec3_lincom(centerOfMen, 1, partialCentroid, -1,
 							vec3_multiply(thrusterAxis[t],
 									vec3_dot(aMinP, thrusterAxis[t])), -1));
 			radialThrustCoeff[t] += partialMass * r2;
@@ -142,7 +141,7 @@ void Ship::computePhysParams() {
 
 void Ship::render() {
 	glPushMatrix();
-	glTranslatef(-pos.x, -pos.y, -pos.z);
+	glTranslatef(pos.x, pos.y, pos.z);
 	glMultMatrixf(rotMatrix.data);
 
 	glTranslatef(-centerOfMen.x, -centerOfMen.y, -centerOfMen.z);
@@ -180,6 +179,13 @@ void Ship::render() {
 		if (particles[i].end > ctime)
 			particle_render(particles[i]);
 	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0, 1, 0);
+	glVertex3f(0, 0, 0);
+	glColor3f(1, 0, 0);
+	glVertex3f(radVel);
+	glEnd();
 	glPopAttrib();
 }
 
@@ -188,32 +194,37 @@ void Ship::update() {
 	const float ctime = glfwGetTime();
 
 	// All da others
-	float mag;
-	vec3 axis = vec3_normalize(rot, &mag);
-	rotMatrix = mag == 0 ? mat4_identity() : mat4_axis_angle(mag, axis);
-	rotInverse = mat4_invert(rotMatrix);
 	for (uint32_t t = 0; t < thrusterCount; t++) {
 		const vec3 patchDir = mat4_multiply(rotMatrix, thrusterDir[t]);
-		vel = vec3_lincom(vel, 1, patchDir, thrusterPower[t] / mass);
-		radVel = vec3_lincom(radVel, 1,
-				mat4_multiply(rotMatrix, thrusterAxis[t]),
-				thrusterPower[t] * radialThrustCoeff[t]);
+		vec3_addto(vel, patchDir, delta * thrusterPower[t] / mass);
+		vec3_addto(radVel, mat4_multiply(rotMatrix, thrusterAxis[t]),
+				delta * thrusterPower[t] * radialThrustCoeff[t]);
 
 		if (thrusterPower[t] > 0) {
-			particles[particleHead].pos = vec3_lincom(pos, -1,
-					mat4_multiply(rotMatrix, thrusterPos[t]), 1);
-			particles[particleHead].vel = vec3_lincom(vel, -1, patchDir,
-					thrusterPower[t]);
+			particles[particleHead].pos = vec3_lincom(pos, 1,
+					mat4_multiply(rotMatrix,
+							vec3_lincom(thrusterPos[t], 1, centerOfMen, -1)),
+					1);
+			particles[particleHead].vel = vec3_lincom(vel, 1, patchDir,
+					thrusterPower[t] / PARTICLE_MASS);
 			particles[particleHead].begin = ctime;
-			particles[particleHead].end = ctime + 25;
-			particles[particleHead].color.x = particles[particleHead].color.y =
-					particles[particleHead].color.z = 1;
+			particles[particleHead].end = ctime + PARTICLE_LIFE;
+			particles[particleHead].color.x = 1;
+			particles[particleHead].color.y = particles[particleHead].color.z =
+					0;
 			particleHead++;
 			if (particleHead >= PARTICLE_COUNT)
 				particleHead = 0;
 		}
 	}
 
-	pos = vec3_lincom(pos, 1, vel, delta);
-	rot = vec3_lincom(rot, 1, radVel, delta);
+	vec3_addto(pos, vel, delta);
+
+	float mag;
+	vec3 axis = vec3_normalize(radVel, &mag);
+	if (mag != 0) {
+		rotMatrix = mat4_multiply(rotMatrix,
+				mat4_axis_angle(mag * delta, axis));
+		rotInverse = mat4_invert(rotMatrix);
+	}
 }

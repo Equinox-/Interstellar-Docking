@@ -1,18 +1,37 @@
 #include "Camera.h"
 #include <GL/gl.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <GLFW/glfw3.h>
+
+Camera *Camera::active = NULL;
 
 Camera::Camera() {
 	offset = -5.0f;
 	pose = mat4_identity();
 	cursorX = cursorY = 0;
+	scrollRegistered = false;
+	if (active != NULL) {
+		printf("Only one active at a time\n");
+		exit(1);
+	}
+	active = this;
+}
+
+void Camera::callback(GLFWwindow* win, double x, double y) {
+	if (active != NULL)
+		active->offset += y;
 }
 
 Camera::~Camera() {
+	active = NULL;
 }
 
 void Camera::process(GLFWwindow *win) {
+	if (!scrollRegistered) {
+		scrollRegistered = true;
+		glfwSetScrollCallback(win, callback);
+	}
 	double currX, currY;
 	glfwGetCursorPos(win, &currX, &currY);
 	const float deltaX = (float) (currX - cursorX);

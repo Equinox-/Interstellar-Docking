@@ -44,7 +44,7 @@ int main(int argc, char ** argv) {
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_COLOR_MATERIAL);
-//	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -66,17 +66,17 @@ int main(int argc, char ** argv) {
 		cam.process(win);
 		glfwSwapBuffers(win);
 
-		delta = glfwGetTime() - prevLoop;
+		delta = (glfwGetTime() - prevLoop) * 1E3;
 		prevLoop = glfwGetTime();
 
 		endurance.zeroThrusters();
 		for (uint32_t c = 0; c < 12; c++) {
 			if (glfwGetKey(win, groupCTL[c])) {
-				endurance.setGroup(c, 1);
+				endurance.addGroup(c, 1);
 			}
 		}
 		if (glfwGetKey(win, GLFW_KEY_SPACE)) {
-			endurance.worldThrust(vec3_make(1, 0, 0));
+			endurance.addWorldThrust(vec3_make(10, 0, 0));
 		}
 		endurance.update();
 	}

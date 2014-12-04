@@ -19,9 +19,13 @@ class Ship {
 private:
 	static const int CONTROL_GROUP_COUNT = 12;
 	static const int PARTICLE_COUNT = 10000;
+	static const float PARTICLE_MASS = 0.1f; //kg
+	static const float PARTICLE_LIFE = 5;
+
+	static const float AREA_DENSITY = 5; // 5kg/m^2
 
 	mat4 rotMatrix, rotInverse;
-	vec3 rot, radVel;
+	vec3 radVel;
 	vec3 pos, vel;
 
 	// Physics params
@@ -59,31 +63,26 @@ public:
 		thrusterPower[t] = power;
 	}
 
-	inline void setGroup(const uint32_t group, const float power) {
+	inline void addGroup(const uint32_t group, const float power) {
 		uint32_t* ctl = controlGroups[group];
 		if (ctl == NULL)
 			return;
 		for (uint32_t t = 0; t < ctl[0]; t++)
-			thrusterPower[ctl[t + 1]] = power;
+			thrusterPower[ctl[t + 1]] += power;
 	}
 
-	inline void worldThrust(vec3 power) {
+	inline void addWorldThrust(vec3 power) {
 		// World -> local
 		vec3 lv = mat4_multiply(rotInverse, power);
 		for (uint8_t i = 0; i < 3; i++) {
-			setGroup(i * 2, (lv.comp[i] > 0) * lv.comp[i]);
-			setGroup(i * 2 + 1, (lv.comp[i] < 0) * -lv.comp[i]);
+			addGroup(i * 2, (lv.comp[i] > 0) * lv.comp[i]);
+			addGroup(i * 2 + 1, (lv.comp[i] < 0) * -lv.comp[i]);
 		}
 	}
 
 	inline void zeroThrusters() {
 		for (uint32_t t = 0; t < thrusterCount; t++)
 			thrusterPower[t] = 0;
-	}
-
-	inline void pose(const vec3 pos, const vec3 rot) {
-		this->pos = pos;
-		this->rot = rot;
 	}
 };
 

@@ -1,6 +1,8 @@
 #ifndef VECMATH_H_
 #define VECMATH_H_
 
+#include <GL/gl.h>
+
 typedef union {
 	struct {
 		float x, y, z;
@@ -40,6 +42,12 @@ inline vec3 vec3_lincom(const vec3 &a, const float aV, const vec3 &b,
 	v.y = a.y * aV + b.y * bV;
 	v.z = a.z * aV + b.z * bV;
 	return v;
+}
+
+inline void vec3_addto(vec3 &a, const vec3 &b, const float bV) {
+	a.x += b.x * bV;
+	a.y += b.y * bV;
+	a.z += b.z * bV;
 }
 
 inline vec3 vec3_lincom(const vec3 &a, const float aV, const vec3 &b,
@@ -83,6 +91,10 @@ inline float vec3_tris_area(const vec3 &a, const vec3 &b, const vec3 &c) {
 	return vec3_mag(
 			vec3_cross(vec3_lincom(a, 1, b, -1), vec3_lincom(c, 1, b, -1)))
 			/ 2.0f;
+}
+
+inline void glVertex3f(const vec3 &v) {
+	glVertex3f(v.x, v.y, v.z);
 }
 
 #endif

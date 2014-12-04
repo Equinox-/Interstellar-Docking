@@ -10,6 +10,11 @@ private:
 	mat4 pose;
 
 	double cursorX, cursorY;
+
+	bool scrollRegistered;
+
+	static void callback(GLFWwindow*,double,double);
+	static Camera *active;
 public:
 	Camera();
 	void process(GLFWwindow *win);
