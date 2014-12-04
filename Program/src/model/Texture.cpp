@@ -116,7 +116,7 @@ int Texture::loadPNG(FILE *fp) {
 	}
 // set the individual row_pointers to point at the correct offsets of image_data
 	for (unsigned register int i = 0; i < height; ++i) {
-		row_pointers[height - 1 - i] = (png_bytep) rawData + i * rowBytes;
+		row_pointers[i] = (png_bytep) rawData + i * rowBytes;
 	}
 //read the png into image_data through row_pointers
 	png_read_image(png_ptr, row_pointers);

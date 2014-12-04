@@ -48,7 +48,7 @@ public class Parser {
 
 	public static void main(String[] args) throws Exception {
 		root = new JSONObject(new JSONTokener(new FileReader(new File(content,
-				"endurance_png_medium.json"))));
+				"endurance_png_medium_with_landers.json"))));
 		dout = new DataOutputStream(new FileOutputStream("endurance.pack"));
 		buffers = root.getJSONObject("buffers");
 		images = root.getJSONObject("images");
