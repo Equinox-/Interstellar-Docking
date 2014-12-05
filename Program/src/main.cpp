@@ -97,8 +97,8 @@ int main(int argc, char ** argv) {
 
 	Ship endurance = Ship("data/endurance.pack");
 
-	Ship ranger = Ship("data/ranger.pack");
-	ranger.pos = vec3_make(0, 0, 10);
+//	Ship ranger = Ship("data/ranger.pack");
+//	ranger.pos = vec3_make(0, 0, 10);
 
 	glfwSetTime(0);
 	double prevLoop = 0;
@@ -113,8 +113,7 @@ int main(int argc, char ** argv) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		endurance.render();
-		ranger.render();
-
+//		ranger.render();
 
 		glPushMatrix();
 		glTranslatef(-200, -200, -200);
@@ -143,7 +142,7 @@ int main(int argc, char ** argv) {
 		cam.process(win);
 		glfwSwapBuffers(win);
 
-		delta = (glfwGetTime() - prevLoop) * 1E3;
+		delta = (glfwGetTime() - prevLoop);
 		prevLoop = glfwGetTime();
 
 		endurance.zeroThrusters();
@@ -159,7 +158,7 @@ int main(int argc, char ** argv) {
 		}
 
 		endurance.update();
-		ranger.update();
+//		ranger.update();
 	}
 
 	glfwDestroyWindow(win);
