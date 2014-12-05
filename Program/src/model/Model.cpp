@@ -19,12 +19,13 @@ Model::Model(const char *fname) {
 	for (uint32_t i = 0; i < textureCount; i++) {
 		uint32_t len = 0;
 		fread(&len, sizeof(uint32_t), 1, f);
-		char *data = new char[dirName + len + 1];
+		char *data = new char[dirName + len + 1 + 4];
 		memcpy(data, fname, dirName);
-		fread(data + dirName, sizeof(char), len, f);
-		data[len + dirName] = 0;
+		data[dirName] = 0;
+		strcat(data, "tex/");
+		fread(data + dirName + 4, sizeof(char), len, f);
+		data[len + dirName + 4] = 0;
 		textureTable[i] = new Texture(data);
-		printf("%d\t%s\n", i, data);
 		delete[] data;
 	}
 

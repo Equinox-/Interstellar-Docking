@@ -1,0 +1,325 @@
+{
+    "buffers": {
+        "enduranceranger_leftShape-idx.bin": {
+            "byteLength": 143556,
+            "path": "enduranceranger_leftShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceranger_leftShape-vtx.bin": {
+            "byteLength": 2009784,
+            "path": "enduranceranger_leftShape-vtx.bin",
+            "type": "ArrayBuffer"
+        }
+    },
+    "images": {
+        "image_19": {
+            "path": "./textures/png/medium/ranger_AAO.png"
+        },
+        "image_20": {
+            "path": "./textures/png/medium/ranger_REFC.png"
+        },
+        "image_21": {
+            "path": "./textures/png/medium/ranger_NRMR.png"
+        }
+    },
+    "materials": {
+        "material.0": {
+            "name": "ranger_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_19",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_21",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_20",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "meshes": {
+        "ranger_leftShape": {
+            "accessors": {
+                "accessor.32": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        14.9744,
+                        16.7684,
+                        84.2227
+                    ],
+                    "min": [
+                        7.27451,
+                        -16.9782,
+                        21.5125
+                    ]
+                },
+                "accessor.33": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.34": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.9977,
+                        0.999395
+                    ],
+                    "min": [
+                        0.00230002,
+                        0.00647002
+                    ]
+                },
+                "accessor.35": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.36": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -0.999994,
+                        -1,
+                        -1
+                    ]
+                }
+            },
+            "name": "ranger_leftShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "enduranceranger_leftShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 35889,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.0",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.32",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.33",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.34",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.35",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.36",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "nodes": {
+    	"ranger": {
+    		"children":[],
+            "matrix": [
+                0.985996,
+                0,
+                0.166769,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -0.166769,
+                0,
+                0.985996,
+                0,
+                4.77701,
+                0,
+                -1.0803,
+                1
+            ],
+            "meshes" : [
+            	"ranger_leftShape"
+            ]
+        },
+        "root": {
+            "children": [
+                "ranger"
+            ],
+            "matrix": [
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ], "meshes":[]
+        }
+    },
+    "scenes": {
+        "defaultScene": {
+            "node": "root"
+        }
+    },
+    "shaders": {
+        "lambert1Fs": {
+            "path": "lambert1Fs.glsl"
+        },
+        "lambert1Vs": {
+            "path": "lambert1Vs.glsl"
+        }
+    },
+    "techniques": {
+        "lambert1": {
+            "parameters": {},
+            "pass": "defaultPass",
+            "passes": {
+                "defaultPass": {
+                    "program": {
+                        "attributes": [
+                            {
+                                "semantic": "VERTEX",
+                                "symbol": "vert",
+                                "type": "FLOAT_VEC3"
+                            },
+                            {
+                                "semantic": "NORMAL",
+                                "symbol": "normal",
+                                "type": "FLOAT_VEC3"
+                            },
+                            {
+                                "semantic": "TEXCOORD",
+                                "symbol": "texcoord",
+                                "type": "FLOAT_VEC2"
+                            }
+                        ],
+                        "uniforms": [
+                            {
+                                "semantic": "WORLDVIEW",
+                                "symbol": "u_mvMatrix",
+                                "type": "FLOAT_MAT4"
+                            },
+                            {
+                                "semantic": "WORLDVIEWINVERSETRANSPOSE",
+                                "symbol": "u_normalMatrix",
+                                "type": "FLOAT_MAT3"
+                            },
+                            {
+                                "semantic": "PROJECTION",
+                                "symbol": "u_projMatrix",
+                                "type": "FLOAT_MAT4"
+                            },
+                            {
+                                "parameter": "diffuseTexture",
+                                "symbol": "u_diffuseTexture",
+                                "type": "SAMPLER_2D"
+                            }
+                        ],
+                        "x-shader/x-fragment": "lambert1Fs",
+                        "x-shader/x-vertex": "lambert1Vs"
+                    },
+                    "states": {
+                        "BLEND": false
+                    },
+                    "type": "program"
+                }
+            }
+        }
+    },
+    "version": "0.1"
+}

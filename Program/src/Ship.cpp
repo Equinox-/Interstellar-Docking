@@ -37,9 +37,9 @@ Ship::Ship(const char *fname) :
 	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++)
 		controlGroups[i] = NULL;
 
-	char *thrName = "data/endurance_wheel.stl.thr"; //[strlen(fname) + 4];
-//	memcpy(thrName, fname, strlen(fname) + 1);
-//	strcat(thrName, ".thr");
+	char thrName[strlen(fname) + 4];
+	memcpy(thrName, fname, strlen(fname) + 1);
+	strcat(thrName, ".thr");
 	loadThrusters(thrName);
 }
 
@@ -59,9 +59,12 @@ Ship::~Ship() {
 
 void Ship::loadThrusters(const char *thrName) {
 	FILE *thr = fopen(thrName, "r");
-	if (thr == NULL)
+	if (thr == NULL) {
+		printf("Failed to open thrusters: %s\n", thrName);
 		return;
+	}
 	fscanf(thr, "%u", &thrusterCount);
+	printf("Count %u\n", thrusterCount);
 	thrusterPos = new vec3[thrusterCount];
 	thrusterDir = new vec3[thrusterCount];
 	thrusterPower = new float[thrusterCount];
@@ -70,6 +73,7 @@ void Ship::loadThrusters(const char *thrName) {
 		fscanf(thr, "%f %f %f\t%f %f %f\n", &thrusterPos[t].x,
 				&thrusterPos[t].y, &thrusterPos[t].z, &thrusterDir[t].x,
 				&thrusterDir[t].y, &thrusterDir[t].z);
+		vec3_addto(thrusterPos[t], model.getCOM(), 1);
 	}
 
 	for (uint32_t i = 0; i < CONTROL_GROUP_COUNT; i++) {
@@ -94,9 +98,9 @@ void Ship::render() {
 	glPushMatrix();
 	glTranslatef(pos.x, pos.y, pos.z);
 	glMultMatrixf(rotMatrix.data);
+	glTranslatef(-model.getCOM().x, -model.getCOM().y, -model.getCOM().z);
 
-//	glTranslatef(-centerOfMen.x, -centerOfMen.y, -centerOfMen.z);
-
+	useProgram(SHADER_SHIP);
 	glColor3f(1, 1, 1);
 	model.render();
 
@@ -144,22 +148,36 @@ void Ship::update() {
 			vec3_addto(angularMomentum,
 					mat4_multiply(rotMatrix, thrusterCross[t]),
 					delta * thrusterPower[t]);
-
-			const vec3 patchPos = mat4_multiply(rotMatrix, thrusterPos[t]);
-			particles[particleHead].pos = vec3_lincom(pos, 1, patchPos, 1);
-			particles[particleHead].vel = vec3_lincom(linearMomentum,
-					1.0f / model.getMass(), patchDir,
-					delta * thrusterPower[t] / PARTICLE_MASS,
-					vec3_cross(omega.v, patchPos), 1);
-			particles[particleHead].begin = ctime;
-			particles[particleHead].end = ctime + PARTICLE_LIFE;
-			particles[particleHead].color.x = 1;
-			particles[particleHead].color.y = particles[particleHead].color.z =
-					0;
-			particleHead++;
-			if (particleHead >= PARTICLE_COUNT)
-				particleHead = 0;
+//
+//			const vec3 patchPos = mat4_multiply(rotMatrix,
+//					vec3_lincom(thrusterPos[t], 1, model.getCOM(), -1));
+//			particles[particleHead].pos = vec3_lincom(pos, 1, patchPos, 1);
+//			particles[particleHead].vel = vec3_lincom(linearMomentum,
+//					1.0f / model.getMass(), patchDir,
+//					delta * thrusterPower[t] / PARTICLE_MASS,
+//					vec3_cross(omega.v, patchPos), 1);
+//			particles[particleHead].begin = ctime;
+//			particles[particleHead].end = ctime + PARTICLE_LIFE;
+//			particles[particleHead].color.x = 1;
+//			particles[particleHead].color.y = particles[particleHead].color.z =
+//					0;
+//			particleHead++;
+//			if (particleHead >= PARTICLE_COUNT)
+//				particleHead = 0;
 		}
+	}
+
+	{
+		particles[particleHead].pos = vec3_lincom(pos, 1,
+				mat4_multiply(rotMatrix, model.getCOM()), -1);
+		particles[particleHead].vel = vec3_make(0, 0, 0);
+		particles[particleHead].begin = ctime;
+		particles[particleHead].end = ctime + PARTICLE_LIFE;
+		particles[particleHead].color.x = particles[particleHead].color.y =
+				particles[particleHead].color.z = 1;
+		particleHead++;
+		if (particleHead >= PARTICLE_COUNT)
+			particleHead = 0;
 	}
 
 	vec3_addto(pos, linearMomentum, 1.0f / model.getMass());

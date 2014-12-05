@@ -19,6 +19,7 @@
 
 class Ship {
 private:
+public:
 	static const int CONTROL_GROUP_COUNT = 12;
 	static const int PARTICLE_COUNT = 10000;
 	static const float PARTICLE_MASS = 100.0f; //kg

@@ -1,0 +1,3127 @@
+{
+    "buffers": {
+        "endurancecenterShape-idx.bin": {
+            "byteLength": 226440,
+            "path": "endurancecenterShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancecenterShape-vtx.bin": {
+            "byteLength": 2134048,
+            "path": "endurancecenterShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancecommandShape-idx.bin": {
+            "byteLength": 95028,
+            "path": "endurancecommandShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancecommandShape-vtx.bin": {
+            "byteLength": 887880,
+            "path": "endurancecommandShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancecryoShape-idx.bin": {
+            "byteLength": 80736,
+            "path": "endurancecryoShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancecryoShape-vtx.bin": {
+            "byteLength": 754320,
+            "path": "endurancecryoShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancehabitatShape1-idx.bin": {
+            "byteLength": 80736,
+            "path": "endurancehabitatShape1-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancehabitatShape1-vtx.bin": {
+            "byteLength": 754320,
+            "path": "endurancehabitatShape1-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancehabitatShape2-idx.bin": {
+            "byteLength": 80736,
+            "path": "endurancehabitatShape2-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancehabitatShape2-vtx.bin": {
+            "byteLength": 754320,
+            "path": "endurancehabitatShape2-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelandersShape-idx.bin": {
+            "byteLength": 133152,
+            "path": "endurancelandersShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelandersShape-vtx.bin": {
+            "byteLength": 1274560,
+            "path": "endurancelandersShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_2_newShape-idx.bin": {
+            "byteLength": 50448,
+            "path": "endurancelanding_pod_2_newShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_2_newShape-vtx.bin": {
+            "byteLength": 470624,
+            "path": "endurancelanding_pod_2_newShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_3_newShape-idx.bin": {
+            "byteLength": 50448,
+            "path": "endurancelanding_pod_3_newShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_3_newShape-vtx.bin": {
+            "byteLength": 470624,
+            "path": "endurancelanding_pod_3_newShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_4_newShape-idx.bin": {
+            "byteLength": 50448,
+            "path": "endurancelanding_pod_4_newShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_4_newShape-vtx.bin": {
+            "byteLength": 470624,
+            "path": "endurancelanding_pod_4_newShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_newShape-idx.bin": {
+            "byteLength": 50448,
+            "path": "endurancelanding_pod_newShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancelanding_pod_newShape-vtx.bin": {
+            "byteLength": 470624,
+            "path": "endurancelanding_pod_newShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancemain_engine_modulesShape-idx.bin": {
+            "byteLength": 83040,
+            "path": "endurancemain_engine_modulesShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "endurancemain_engine_modulesShape-vtx.bin": {
+            "byteLength": 1053696,
+            "path": "endurancemain_engine_modulesShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceranger_leftShape-idx.bin": {
+            "byteLength": 143556,
+            "path": "enduranceranger_leftShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceranger_leftShape-vtx.bin": {
+            "byteLength": 2009784,
+            "path": "enduranceranger_leftShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceranger_rightShape-idx.bin": {
+            "byteLength": 143868,
+            "path": "enduranceranger_rightShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceranger_rightShape-vtx.bin": {
+            "byteLength": 2014152,
+            "path": "enduranceranger_rightShape-vtx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceringShape-idx.bin": {
+            "byteLength": 156336,
+            "path": "enduranceringShape-idx.bin",
+            "type": "ArrayBuffer"
+        },
+        "enduranceringShape-vtx.bin": {
+            "byteLength": 1470896,
+            "path": "enduranceringShape-vtx.bin",
+            "type": "ArrayBuffer"
+        }
+    },
+    "images": {
+        "image_0": {
+            "path": "./textures/png/medium/center_AAO.png"
+        },
+        "image_1": {
+            "path": "./textures/png/medium/center_REFC.png"
+        },
+        "image_10": {
+            "path": "./textures/png/medium/lander_REFC.png"
+        },
+        "image_11": {
+            "path": "./textures/png/medium/lander_NRMR.png"
+        },
+        "image_12": {
+            "path": "./textures/png/medium/landing_pods_AAO.png"
+        },
+        "image_13": {
+            "path": "./textures/png/medium/landing_pods_REFC.png"
+        },
+        "image_14": {
+            "path": "./textures/png/medium/landing_pods_NRMR.png"
+        },
+        "image_15": {
+            "path": "./textures/png/medium/main_engine_E.png"
+        },
+        "image_16": {
+            "path": "./textures/png/medium/main_engine_AAO.png"
+        },
+        "image_17": {
+            "path": "./textures/png/medium/main_engine_REFC.png"
+        },
+        "image_18": {
+            "path": "./textures/png/medium/main_engine_NRMR.png"
+        },
+        "image_19": {
+            "path": "./textures/png/medium/ranger_AAO.png"
+        },
+        "image_2": {
+            "path": "./textures/png/medium/center_NRMR.png"
+        },
+        "image_20": {
+            "path": "./textures/png/medium/ranger_REFC.png"
+        },
+        "image_21": {
+            "path": "./textures/png/medium/ranger_NRMR.png"
+        },
+        "image_22": {
+            "path": "./textures/png/medium/ring_AAO.png"
+        },
+        "image_23": {
+            "path": "./textures/png/medium/ring_REFC.png"
+        },
+        "image_24": {
+            "path": "./textures/png/medium/ring_NRMR.png"
+        },
+        "image_3": {
+            "path": "./textures/png/medium/command_AAO.png"
+        },
+        "image_4": {
+            "path": "./textures/png/medium/command_REFC.png"
+        },
+        "image_5": {
+            "path": "./textures/png/medium/command_NRMR.png"
+        },
+        "image_6": {
+            "path": "./textures/png/medium/habitat_bridge_cryo_AAO.png"
+        },
+        "image_7": {
+            "path": "./textures/png/medium/habitat_bridge_cryo_REFC.png"
+        },
+        "image_8": {
+            "path": "./textures/png/medium/habitat_bridge_cryo_NRMR.png"
+        },
+        "image_9": {
+            "path": "./textures/png/medium/lander_AAO.png"
+        }
+    },
+    "materials": {
+        "material.0": {
+            "name": "ranger_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_19",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_21",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_20",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.1": {
+            "name": "lander_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_9",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_11",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_10",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.2": {
+            "name": "center_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_0",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_2",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_1",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.3": {
+            "name": "ring_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_22",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_24",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_23",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.4": {
+            "name": "command_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_3",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_5",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_4",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.5": {
+            "name": "cryo_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_6",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_8",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_7",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.6": {
+            "name": "main_engine_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_16",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionTexture": {
+                            "image": "image_15",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_18",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_17",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.7": {
+            "name": "landing_pods_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_12",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_14",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_13",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        },
+        "material.8": {
+            "name": "habitat_MAT",
+            "technique": "lambert1",
+            "techniques": {
+                "lambert1": {
+                    "parameters": {
+                        "ambientColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "diffuseTexture": {
+                            "image": "image_6",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "emissionColor": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "indexOfRefraction": -1,
+                        "opacityColor": [
+                            1,
+                            1,
+                            1
+                        ],
+                        "reflectiveTexture": {
+                            "image": "image_8",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        },
+                        "reflectivity": 0,
+                        "shininess": 2,
+                        "specularTexture": {
+                            "image": "image_7",
+                            "magFilter": "LINEAR",
+                            "minFilter": "LINEAR",
+                            "wrapS": "REPEAT",
+                            "wrapT": "REPEAT"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "meshes": {
+        "centerShape": {
+            "accessors": {
+                "accessor.68": {
+                    "buffer": "endurancecenterShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 38108,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        71.3627,
+                        20.7992,
+                        30.6938
+                    ],
+                    "min": [
+                        -29.2348,
+                        -21.4231,
+                        -33.0466
+                    ]
+                },
+                "accessor.69": {
+                    "buffer": "endurancecenterShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 38108,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999994,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -0.999996,
+                        -1,
+                        -0.999996
+                    ]
+                },
+                "accessor.70": {
+                    "buffer": "endurancecenterShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 38108,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.972649,
+                        0.666675
+                    ],
+                    "min": [
+                        0.000419,
+                        0.00236201
+                    ]
+                },
+                "accessor.71": {
+                    "buffer": "endurancecenterShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 38108,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999997,
+                        1,
+                        0.999999
+                    ],
+                    "min": [
+                        -1,
+                        -0.999991,
+                        -0.999999
+                    ]
+                },
+                "accessor.72": {
+                    "buffer": "endurancecenterShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 38108,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999987,
+                        1,
+                        0.999997
+                    ],
+                    "min": [
+                        -0.99999,
+                        -0.999996,
+                        -0.999999
+                    ]
+                }
+            },
+            "name": "centerShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancecenterShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 56610,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.2",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.68",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.69",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.70",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.71",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.72",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "commandShape": {
+            "accessors": {
+                "accessor.104": {
+                    "buffer": "endurancecommandShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 15855,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        -64.0707,
+                        11.896,
+                        33.7708
+                    ],
+                    "min": [
+                        -106.701,
+                        -12.049,
+                        -13.0081
+                    ]
+                },
+                "accessor.105": {
+                    "buffer": "endurancecommandShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 15855,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999964,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -0.999999,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.106": {
+                    "buffer": "endurancecommandShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 15855,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.934853,
+                        0.998008
+                    ],
+                    "min": [
+                        0.001866,
+                        0.00199199
+                    ]
+                },
+                "accessor.107": {
+                    "buffer": "endurancecommandShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 15855,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -0.999997,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.108": {
+                    "buffer": "endurancecommandShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 15855,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                }
+            },
+            "name": "commandShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancecommandShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 23757,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.4",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.104",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.105",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.106",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.107",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.108",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "cryoShape": {
+            "accessors": {
+                "accessor.122": {
+                    "buffer": "endurancecryoShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        11.3111,
+                        107.184,
+                        28.203
+                    ],
+                    "min": [
+                        -12.8433,
+                        64.9534,
+                        -13.4524
+                    ]
+                },
+                "accessor.123": {
+                    "buffer": "endurancecryoShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999999,
+                        0.999948,
+                        0.999945
+                    ],
+                    "min": [
+                        -1,
+                        -0.999947,
+                        -0.999946
+                    ]
+                },
+                "accessor.124": {
+                    "buffer": "endurancecryoShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.998374,
+                        1
+                    ],
+                    "min": [
+                        0,
+                        0
+                    ]
+                },
+                "accessor.125": {
+                    "buffer": "endurancecryoShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        0.999935,
+                        0.999997
+                    ],
+                    "min": [
+                        -1,
+                        -0.999935,
+                        -0.999991
+                    ]
+                },
+                "accessor.126": {
+                    "buffer": "endurancecryoShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999998,
+                        0.999898,
+                        0.999955
+                    ],
+                    "min": [
+                        -1,
+                        -0.999999,
+                        -0.999981
+                    ]
+                }
+            },
+            "name": "cryoShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancecryoShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 20184,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.5",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.122",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.123",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.124",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.125",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.126",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "habitatShape1": {
+            "accessors": {
+                "accessor.230": {
+                    "buffer": "endurancehabitatShape1-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        11.3111,
+                        107.184,
+                        28.203
+                    ],
+                    "min": [
+                        -12.8433,
+                        64.9534,
+                        -13.4524
+                    ]
+                },
+                "accessor.231": {
+                    "buffer": "endurancehabitatShape1-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999999,
+                        0.999948,
+                        0.999945
+                    ],
+                    "min": [
+                        -1,
+                        -0.999947,
+                        -0.999946
+                    ]
+                },
+                "accessor.232": {
+                    "buffer": "endurancehabitatShape1-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.998374,
+                        1
+                    ],
+                    "min": [
+                        0,
+                        0
+                    ]
+                },
+                "accessor.233": {
+                    "buffer": "endurancehabitatShape1-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        0.999935,
+                        0.999997
+                    ],
+                    "min": [
+                        -1,
+                        -0.999935,
+                        -0.999991
+                    ]
+                },
+                "accessor.234": {
+                    "buffer": "endurancehabitatShape1-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999998,
+                        0.999898,
+                        0.999955
+                    ],
+                    "min": [
+                        -1,
+                        -0.999999,
+                        -0.999981
+                    ]
+                }
+            },
+            "name": "habitatShape1",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancehabitatShape1-idx.bin",
+                        "byteOffset": 0,
+                        "length": 20184,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.8",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.230",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.231",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.232",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.233",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.234",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "habitatShape2": {
+            "accessors": {
+                "accessor.248": {
+                    "buffer": "endurancehabitatShape2-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        11.3111,
+                        107.184,
+                        28.203
+                    ],
+                    "min": [
+                        -12.8433,
+                        64.9534,
+                        -13.4524
+                    ]
+                },
+                "accessor.249": {
+                    "buffer": "endurancehabitatShape2-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999999,
+                        0.999948,
+                        0.999945
+                    ],
+                    "min": [
+                        -1,
+                        -0.999947,
+                        -0.999946
+                    ]
+                },
+                "accessor.250": {
+                    "buffer": "endurancehabitatShape2-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.998374,
+                        1
+                    ],
+                    "min": [
+                        0,
+                        0
+                    ]
+                },
+                "accessor.251": {
+                    "buffer": "endurancehabitatShape2-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        0.999935,
+                        0.999997
+                    ],
+                    "min": [
+                        -1,
+                        -0.999935,
+                        -0.999991
+                    ]
+                },
+                "accessor.252": {
+                    "buffer": "endurancehabitatShape2-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 13470,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999998,
+                        0.999898,
+                        0.999955
+                    ],
+                    "min": [
+                        -1,
+                        -0.999999,
+                        -0.999981
+                    ]
+                }
+            },
+            "name": "habitatShape2",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancehabitatShape2-idx.bin",
+                        "byteOffset": 0,
+                        "length": 20184,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.8",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.248",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.249",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.250",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.251",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.252",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "landersShape": {
+            "accessors": {
+                "accessor.50": {
+                    "buffer": "endurancelandersShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 22760,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        25.558,
+                        26.9741,
+                        41.3092
+                    ],
+                    "min": [
+                        -24.59,
+                        -27.8368,
+                        -26.9691
+                    ]
+                },
+                "accessor.51": {
+                    "buffer": "endurancelandersShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 22760,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999936,
+                        1,
+                        0.999995
+                    ],
+                    "min": [
+                        -0.999914,
+                        -0.999908,
+                        -0.999999
+                    ]
+                },
+                "accessor.52": {
+                    "buffer": "endurancelandersShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 22760,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.999308,
+                        0.998478
+                    ],
+                    "min": [
+                        0.002523,
+                        0.000469029
+                    ]
+                },
+                "accessor.53": {
+                    "buffer": "endurancelandersShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 22760,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999907,
+                        0.999994,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -0.999996,
+                        -0.999894
+                    ]
+                },
+                "accessor.54": {
+                    "buffer": "endurancelandersShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 22760,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        0.999606,
+                        0.999917
+                    ],
+                    "min": [
+                        -1,
+                        -0.999997,
+                        -1
+                    ]
+                }
+            },
+            "name": "landersShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancelandersShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 33288,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.1",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.50",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.51",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.52",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.53",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.54",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "landing_pod_2_newShape": {
+            "accessors": {
+                "accessor.176": {
+                    "buffer": "endurancelanding_pod_2_newShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        62.2637,
+                        98.7156,
+                        28.7724
+                    ],
+                    "min": [
+                        23.8735,
+                        51.7754,
+                        -12.9641
+                    ]
+                },
+                "accessor.177": {
+                    "buffer": "endurancelanding_pod_2_newShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.964578,
+                        0.99645,
+                        0.999925
+                    ],
+                    "min": [
+                        -0.999929,
+                        -0.994685,
+                        -0.999974
+                    ]
+                },
+                "accessor.178": {
+                    "buffer": "endurancelanding_pod_2_newShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.991981,
+                        0.99715
+                    ],
+                    "min": [
+                        0.005264,
+                        0.00740403
+                    ]
+                },
+                "accessor.179": {
+                    "buffer": "endurancelanding_pod_2_newShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999877,
+                        0.999023,
+                        0.999999
+                    ],
+                    "min": [
+                        -0.999957,
+                        -0.99953,
+                        -0.999968
+                    ]
+                },
+                "accessor.180": {
+                    "buffer": "endurancelanding_pod_2_newShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999662,
+                        0.999943,
+                        0.999996
+                    ],
+                    "min": [
+                        -0.999163,
+                        -0.999733,
+                        -0.999994
+                    ]
+                }
+            },
+            "name": "landing_pod_2_newShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancelanding_pod_2_newShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 12612,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.7",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.176",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.177",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.178",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.179",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.180",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "landing_pod_3_newShape": {
+            "accessors": {
+                "accessor.212": {
+                    "buffer": "endurancelanding_pod_3_newShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        62.2637,
+                        98.7156,
+                        28.7724
+                    ],
+                    "min": [
+                        23.8735,
+                        51.7754,
+                        -12.9641
+                    ]
+                },
+                "accessor.213": {
+                    "buffer": "endurancelanding_pod_3_newShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.964578,
+                        0.99645,
+                        0.999925
+                    ],
+                    "min": [
+                        -0.999929,
+                        -0.994685,
+                        -0.999974
+                    ]
+                },
+                "accessor.214": {
+                    "buffer": "endurancelanding_pod_3_newShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.991981,
+                        0.99715
+                    ],
+                    "min": [
+                        0.005264,
+                        0.00740403
+                    ]
+                },
+                "accessor.215": {
+                    "buffer": "endurancelanding_pod_3_newShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999877,
+                        0.999023,
+                        0.999999
+                    ],
+                    "min": [
+                        -0.999957,
+                        -0.99953,
+                        -0.999968
+                    ]
+                },
+                "accessor.216": {
+                    "buffer": "endurancelanding_pod_3_newShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999662,
+                        0.999943,
+                        0.999996
+                    ],
+                    "min": [
+                        -0.999163,
+                        -0.999733,
+                        -0.999994
+                    ]
+                }
+            },
+            "name": "landing_pod_3_newShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancelanding_pod_3_newShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 12612,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.7",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.212",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.213",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.214",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.215",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.216",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "landing_pod_4_newShape": {
+            "accessors": {
+                "accessor.158": {
+                    "buffer": "endurancelanding_pod_4_newShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        62.2637,
+                        98.7156,
+                        28.7724
+                    ],
+                    "min": [
+                        23.8735,
+                        51.7754,
+                        -12.9641
+                    ]
+                },
+                "accessor.159": {
+                    "buffer": "endurancelanding_pod_4_newShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.964578,
+                        0.99645,
+                        0.999925
+                    ],
+                    "min": [
+                        -0.999929,
+                        -0.994685,
+                        -0.999974
+                    ]
+                },
+                "accessor.160": {
+                    "buffer": "endurancelanding_pod_4_newShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.991981,
+                        0.99715
+                    ],
+                    "min": [
+                        0.005264,
+                        0.00740403
+                    ]
+                },
+                "accessor.161": {
+                    "buffer": "endurancelanding_pod_4_newShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999877,
+                        0.999023,
+                        0.999999
+                    ],
+                    "min": [
+                        -0.999957,
+                        -0.99953,
+                        -0.999968
+                    ]
+                },
+                "accessor.162": {
+                    "buffer": "endurancelanding_pod_4_newShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999662,
+                        0.999943,
+                        0.999996
+                    ],
+                    "min": [
+                        -0.999163,
+                        -0.999733,
+                        -0.999994
+                    ]
+                }
+            },
+            "name": "landing_pod_4_newShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancelanding_pod_4_newShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 12612,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.7",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.158",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.159",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.160",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.161",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.162",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "landing_pod_newShape": {
+            "accessors": {
+                "accessor.194": {
+                    "buffer": "endurancelanding_pod_newShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        62.2637,
+                        98.7156,
+                        28.7724
+                    ],
+                    "min": [
+                        23.8735,
+                        51.7754,
+                        -12.9641
+                    ]
+                },
+                "accessor.195": {
+                    "buffer": "endurancelanding_pod_newShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.964578,
+                        0.99645,
+                        0.999925
+                    ],
+                    "min": [
+                        -0.999929,
+                        -0.994685,
+                        -0.999974
+                    ]
+                },
+                "accessor.196": {
+                    "buffer": "endurancelanding_pod_newShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.991981,
+                        0.99715
+                    ],
+                    "min": [
+                        0.005264,
+                        0.00740403
+                    ]
+                },
+                "accessor.197": {
+                    "buffer": "endurancelanding_pod_newShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999877,
+                        0.999023,
+                        0.999999
+                    ],
+                    "min": [
+                        -0.999957,
+                        -0.99953,
+                        -0.999968
+                    ]
+                },
+                "accessor.198": {
+                    "buffer": "endurancelanding_pod_newShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 8404,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999662,
+                        0.999943,
+                        0.999996
+                    ],
+                    "min": [
+                        -0.999163,
+                        -0.999733,
+                        -0.999994
+                    ]
+                }
+            },
+            "name": "landing_pod_newShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancelanding_pod_newShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 12612,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.7",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.194",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.195",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.196",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.197",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.198",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "main_engine_modulesShape": {
+            "accessors": {
+                "accessor.140": {
+                    "buffer": "endurancemain_engine_modulesShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 18816,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        98.0838,
+                        64.8703,
+                        27.7411
+                    ],
+                    "min": [
+                        -98.6442,
+                        -63.5866,
+                        -12.8441
+                    ]
+                },
+                "accessor.141": {
+                    "buffer": "endurancemain_engine_modulesShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 18816,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999938,
+                        0.999876,
+                        0.999932
+                    ],
+                    "min": [
+                        -0.999938,
+                        -0.999876,
+                        -0.999999
+                    ]
+                },
+                "accessor.142": {
+                    "buffer": "endurancemain_engine_modulesShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 18816,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.982789,
+                        0.999748
+                    ],
+                    "min": [
+                        0,
+                        0.00198197
+                    ]
+                },
+                "accessor.143": {
+                    "buffer": "endurancemain_engine_modulesShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 18816,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999992,
+                        0.999979,
+                        0.999994
+                    ],
+                    "min": [
+                        -0.999993,
+                        -0.999953,
+                        -1
+                    ]
+                },
+                "accessor.144": {
+                    "buffer": "endurancemain_engine_modulesShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 18816,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999971,
+                        0.999917,
+                        0.999994
+                    ],
+                    "min": [
+                        -0.999973,
+                        -0.999889,
+                        -0.999984
+                    ]
+                }
+            },
+            "name": "main_engine_modulesShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "endurancemain_engine_modulesShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 20760,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.6",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.140",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.141",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.142",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.143",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.144",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "ranger_leftShape": {
+            "accessors": {
+                "accessor.32": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        14.9744,
+                        16.7684,
+                        84.2227
+                    ],
+                    "min": [
+                        7.27451,
+                        -16.9782,
+                        21.5125
+                    ]
+                },
+                "accessor.33": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.34": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.9977,
+                        0.999395
+                    ],
+                    "min": [
+                        0.00230002,
+                        0.00647002
+                    ]
+                },
+                "accessor.35": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.36": {
+                    "buffer": "enduranceranger_leftShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 35889,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -0.999994,
+                        -1,
+                        -1
+                    ]
+                }
+            },
+            "name": "ranger_leftShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "enduranceranger_leftShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 35889,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.0",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.32",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.33",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.34",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.35",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.36",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "ranger_rightShape": {
+            "accessors": {
+                "accessor.14": {
+                    "buffer": "enduranceranger_rightShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 35967,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        -7.56507,
+                        16.4366,
+                        84.2227
+                    ],
+                    "min": [
+                        -15.265,
+                        -17.3101,
+                        21.5125
+                    ]
+                },
+                "accessor.15": {
+                    "buffer": "enduranceranger_rightShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 35967,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.16": {
+                    "buffer": "enduranceranger_rightShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 35967,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.9977,
+                        0.999395
+                    ],
+                    "min": [
+                        0.00230002,
+                        0.00647002
+                    ]
+                },
+                "accessor.17": {
+                    "buffer": "enduranceranger_rightShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 35967,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                },
+                "accessor.18": {
+                    "buffer": "enduranceranger_rightShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 35967,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999993,
+                        1,
+                        1
+                    ],
+                    "min": [
+                        -1,
+                        -1,
+                        -1
+                    ]
+                }
+            },
+            "name": "ranger_rightShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "enduranceranger_rightShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 35967,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.0",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.14",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.15",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.16",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.17",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.18",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        },
+        "ringShape": {
+            "accessors": {
+                "accessor.86": {
+                    "buffer": "enduranceringShape-vtx.bin",
+                    "byteOffset": 0,
+                    "byteStride": 12,
+                    "count": 26266,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        89.0103,
+                        82.2416,
+                        16.1377
+                    ],
+                    "min": [
+                        -89.3891,
+                        -80.7924,
+                        1.06544
+                    ]
+                },
+                "accessor.87": {
+                    "buffer": "enduranceringShape-vtx.bin",
+                    "byteOffset": 12,
+                    "byteStride": 12,
+                    "count": 26266,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999867,
+                        0.999982,
+                        1
+                    ],
+                    "min": [
+                        -0.999867,
+                        -0.999997,
+                        -1
+                    ]
+                },
+                "accessor.88": {
+                    "buffer": "enduranceringShape-vtx.bin",
+                    "byteOffset": 24,
+                    "byteStride": 8,
+                    "count": 26266,
+                    "elementType": "Float32",
+                    "elementsPerValue": 2,
+                    "max": [
+                        0.987254,
+                        0.996396
+                    ],
+                    "min": [
+                        0.000639,
+                        0.011828
+                    ]
+                },
+                "accessor.89": {
+                    "buffer": "enduranceringShape-vtx.bin",
+                    "byteOffset": 32,
+                    "byteStride": 12,
+                    "count": 26266,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999942,
+                        0.999999,
+                        1
+                    ],
+                    "min": [
+                        -0.999997,
+                        -0.999867,
+                        -1
+                    ]
+                },
+                "accessor.90": {
+                    "buffer": "enduranceringShape-vtx.bin",
+                    "byteOffset": 44,
+                    "byteStride": 12,
+                    "count": 26266,
+                    "elementType": "Float32",
+                    "elementsPerValue": 3,
+                    "max": [
+                        0.999941,
+                        0.999867,
+                        1
+                    ],
+                    "min": [
+                        -0.999964,
+                        -0.999906,
+                        -1
+                    ]
+                }
+            },
+            "name": "ringShape",
+            "primitives": [
+                {
+                    "indices": {
+                        "buffer": "enduranceringShape-idx.bin",
+                        "byteOffset": 0,
+                        "length": 39084,
+                        "type": "Uint32Array"
+                    },
+                    "material": "material.3",
+                    "primitive": "TRIANGLES",
+                    "vertexAttributes": [
+                        {
+                            "accessor": "accessor.86",
+                            "semantic": "VERTEX"
+                        },
+                        {
+                            "accessor": "accessor.87",
+                            "semantic": "NORMAL"
+                        },
+                        {
+                            "accessor": "accessor.88",
+                            "semantic": "TEXCOORD"
+                        },
+                        {
+                            "accessor": "accessor.89",
+                            "semantic": "TEXTANGENT"
+                        },
+                        {
+                            "accessor": "accessor.90",
+                            "semantic": "TEXBINORMAL"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "nodes": {
+        "node_0": {
+            "children": [
+                "node_1",
+                "node_4",
+                "node_6",
+                "node_8",
+                "node_10",
+                "node_12",
+                "node_14",
+                "node_16",
+                "node_21"
+            ],
+            "matrix": [
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                0.1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "Endurance"
+        },
+        "node_1": {
+            "children": [
+                "node_2",
+                "node_3"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "rangers"
+        },
+        "node_10": {
+            "children": [
+                "node_11"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "bridge_command_endurance"
+        },
+        "node_11": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "commandShape"
+            ],
+            "name": "command"
+        },
+        "node_12": {
+            "children": [
+                "node_13"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "cryo_endurance"
+        },
+        "node_13": {
+            "children": [],
+            "matrix": [
+                -1,
+                8.97932e-011,
+                0,
+                0,
+                -8.97932e-011,
+                -1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "cryoShape"
+            ],
+            "name": "cryo"
+        },
+        "node_14": {
+            "children": [
+                "node_15"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "main_engines_endurance"
+        },
+        "node_15": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "main_engine_modulesShape"
+            ],
+            "name": "main_engine_modules"
+        },
+        "node_16": {
+            "children": [
+                "node_17",
+                "node_18",
+                "node_19",
+                "node_20"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "landing_pod_endurance"
+        },
+        "node_17": {
+            "children": [],
+            "matrix": [
+                -1,
+                8.97932e-011,
+                0,
+                0,
+                -8.97932e-011,
+                -1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                1.80171,
+                1.612,
+                1
+            ],
+            "meshes": [
+                "landing_pod_4_newShape"
+            ],
+            "name": "landing_pod_4_new"
+        },
+        "node_18": {
+            "children": [],
+            "matrix": [
+                -0.5,
+                -0.866025,
+                0,
+                0,
+                0.866025,
+                -0.5,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                -0.842,
+                0.23,
+                1.952,
+                1
+            ],
+            "meshes": [
+                "landing_pod_2_newShape"
+            ],
+            "name": "landing_pod_2_new"
+        },
+        "node_19": {
+            "children": [],
+            "matrix": [
+                0.5,
+                0.866025,
+                0,
+                0,
+                -0.866025,
+                0.5,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "landing_pod_newShape"
+            ],
+            "name": "landing_pod_new"
+        },
+        "node_2": {
+            "children": [],
+            "matrix": [
+                0.98585,
+                0,
+                -0.167629,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0.167629,
+                0,
+                0.98585,
+                0,
+                -4.51701,
+                0,
+                -1.09455,
+                1
+            ],
+            "meshes": [
+                "ranger_rightShape"
+            ],
+            "name": "ranger_right"
+        },
+        "node_20": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "landing_pod_3_newShape"
+            ],
+            "name": "landing_pod_3_new"
+        },
+        "node_21": {
+            "children": [
+                "node_22",
+                "node_23"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "habitate_endurance"
+        },
+        "node_22": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "habitatShape1"
+            ],
+            "name": "habitat1"
+        },
+        "node_23": {
+            "children": [],
+            "matrix": [
+                -1.3469e-010,
+                -1,
+                0,
+                0,
+                1,
+                -1.3469e-010,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "habitatShape2"
+            ],
+            "name": "habitat2"
+        },
+        "node_3": {
+            "children": [],
+            "matrix": [
+                0.985996,
+                0,
+                0.166769,
+                0,
+                0,
+                1,
+                0,
+                0,
+                -0.166769,
+                0,
+                0.985996,
+                0,
+                4.77701,
+                0,
+                -1.0803,
+                1
+            ],
+            "meshes": [
+                "ranger_leftShape"
+            ],
+            "name": "ranger_left"
+        },
+        "node_4": {
+            "children": [
+                "node_5"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "landers"
+        },
+        "node_5": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                -0.56,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "landersShape"
+            ],
+            "name": "landers"
+        },
+        "node_6": {
+            "children": [
+                "node_7"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "centrals_endurance"
+        },
+        "node_7": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0.24,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "centerShape"
+            ],
+            "name": "center"
+        },
+        "node_8": {
+            "children": [
+                "node_9"
+            ],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "name": "ring_endurance"
+        },
+        "node_9": {
+            "children": [],
+            "matrix": [
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                1
+            ],
+            "meshes": [
+                "ringShape"
+            ],
+            "name": "ring"
+        },
+        "root": {
+            "children": [
+                "node_0"
+            ]
+        }
+    },
+    "scenes": {
+        "defaultScene": {
+            "node": "root"
+        }
+    },
+    "shaders": {
+        "lambert1Fs": {
+            "path": "lambert1Fs.glsl"
+        },
+        "lambert1Vs": {
+            "path": "lambert1Vs.glsl"
+        }
+    },
+    "techniques": {
+        "lambert1": {
+            "parameters": {},
+            "pass": "defaultPass",
+            "passes": {
+                "defaultPass": {
+                    "program": {
+                        "attributes": [
+                            {
+                                "semantic": "VERTEX",
+                                "symbol": "vert",
+                                "type": "FLOAT_VEC3"
+                            },
+                            {
+                                "semantic": "NORMAL",
+                                "symbol": "normal",
+                                "type": "FLOAT_VEC3"
+                            },
+                            {
+                                "semantic": "TEXCOORD",
+                                "symbol": "texcoord",
+                                "type": "FLOAT_VEC2"
+                            }
+                        ],
+                        "uniforms": [
+                            {
+                                "semantic": "WORLDVIEW",
+                                "symbol": "u_mvMatrix",
+                                "type": "FLOAT_MAT4"
+                            },
+                            {
+                                "semantic": "WORLDVIEWINVERSETRANSPOSE",
+                                "symbol": "u_normalMatrix",
+                                "type": "FLOAT_MAT3"
+                            },
+                            {
+                                "semantic": "PROJECTION",
+                                "symbol": "u_projMatrix",
+                                "type": "FLOAT_MAT4"
+                            },
+                            {
+                                "parameter": "diffuseTexture",
+                                "symbol": "u_diffuseTexture",
+                                "type": "SAMPLER_2D"
+                            }
+                        ],
+                        "x-shader/x-fragment": "lambert1Fs",
+                        "x-shader/x-vertex": "lambert1Vs"
+                    },
+                    "states": {
+                        "BLEND": false
+                    },
+                    "type": "program"
+                }
+            }
+        }
+    },
+    "version": "0.1"
+}

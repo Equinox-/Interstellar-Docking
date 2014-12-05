@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <GL/glew.h>
+#include <string.h>
 
-#define GL_GLEXT_PROTOTYPES 1
 char *textFileRead(char *fn) {
+	printf("Read shader from %s\n", fn);
 	FILE *fp;
 	char *content = NULL;
 
@@ -21,17 +22,28 @@ char *textFileRead(char *fn) {
 	return content;
 }
 
-int shaders = 0;
+static const char * const shader_names[] = { "ship", "planet", "atm" };
 
-void useProgram() {
-	if (shaders == 0) {
+int shaderStorage[2];
+
+void useProgram(int id) {
+	if (shaderStorage[id] == 0) {
 		char *vs, *fs;
 
 		int v = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
 		int f = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
 
-		vs = textFileRead("data/shade_vert.glsl");
-		fs = textFileRead("data/shade_frag.glsl");
+		char fileBuff[5 + 6 + strlen(shader_names[id]) + 11];
+		fileBuff[0] = 0;
+		strcat(fileBuff, "data/shade/");
+		strcat(fileBuff, shader_names[id]);
+		strcat(fileBuff, "_vert.glsl");
+		vs = textFileRead(fileBuff);
+		fileBuff[0] = 0;
+		strcat(fileBuff, "data/shade/");
+		strcat(fileBuff, shader_names[id]);
+		strcat(fileBuff, "_frag.glsl");
+		fs = textFileRead(fileBuff);
 
 		int state;
 		glShaderSourceARB(v, 1, (const GLcharARB**) &vs, NULL);
@@ -43,13 +55,13 @@ void useProgram() {
 		glCompileShaderARB(v);
 		glCompileShaderARB(f);
 
-		shaders = glCreateProgramObjectARB();
-		glAttachObjectARB(shaders, f);
-		glAttachObjectARB(shaders, v);
+		shaderStorage[id] = glCreateProgramObjectARB();
+		glAttachObjectARB(shaderStorage[id], f);
+		glAttachObjectARB(shaderStorage[id], v);
 
-		glLinkProgramARB(shaders);
+		glLinkProgramARB(shaderStorage[id]);
 	}
-	glUseProgramObjectARB(shaders);
+	glUseProgramObjectARB(shaderStorage[id]);
 }
 
 void nouseProgram() {
