@@ -1,6 +1,7 @@
 #version 120
 
 attribute vec3 tangent;
+varying vec3 vertPos;
 varying vec3 lightVec;
 varying vec3 halfVec;
 varying vec3 eyeVec;
@@ -13,6 +14,7 @@ void main() {
 	vec3 b = cross(n, t);
 
 	vec3 vertexPosition = vec3(gl_ModelViewMatrix * gl_Vertex);
+	vertPos = vertexPosition;
 	vec3 lightDir = normalize(gl_LightSource[0].position.xyz - vertexPosition);
 
 	vec3 v;
