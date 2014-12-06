@@ -7,12 +7,12 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.PixelFormat;
 
 import com.pi.gl.Camera;
 import com.pi.gl.Shaders;
@@ -27,20 +27,22 @@ public class Main {
 
 	private static double physDelta = 0;
 
+	private static final long initTime = System.currentTimeMillis();
+
 	public static double getTime() {
-		return (double) Sys.getTime() / (double) Sys.getTimerResolution();
+		return (System.currentTimeMillis() - initTime) / 100.0;
 	}
 
 	public static double getDelta() {
 		return physDelta;
 	}
 
-	private static final float HORIZ_FOV = 45;
+	private static final float HORIZ_FOV = 120;
 
 	public Main() throws LWJGLException, IOException {
 		Display.setDisplayMode(new DisplayMode(800, 800));
 		Display.setTitle("Docking");
-		Display.create();
+		Display.create(new PixelFormat(8, 8, 0, 8));
 
 		load();
 		init();
@@ -51,7 +53,7 @@ public class Main {
 		GL11.glViewport(0, 0, width, height);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		final float tanV = (float) Math.tan(HORIZ_FOV * Math.PI / 180.0);
+		final float tanV = (float) Math.tan(HORIZ_FOV * Math.PI / 360.0);
 		final float aspect = height / (float) width;
 		GL11.glFrustum(-tanV, tanV, -tanV * aspect, tanV * aspect, 1, 1000);
 	}
@@ -123,7 +125,8 @@ public class Main {
 			Keyboard.KEY_U, Keyboard.KEY_O };
 
 	private static final FloatBuffer LIGHT0_POSITION = (FloatBuffer) BufferUtils
-			.createFloatBuffer(4).put(new float[] { 0, -1, -1, -1 }).rewind();
+			.createFloatBuffer(4).put(new float[] { 100, 100, 100, 1 })
+			.rewind();
 	private static final FloatBuffer LIGHT0_DIFFUSE = (FloatBuffer) BufferUtils
 			.createFloatBuffer(4).put(new float[] { 1, 1, 1, 1 }).rewind();
 	private static final FloatBuffer LIGHT0_SPECULAR = (FloatBuffer) BufferUtils
@@ -152,7 +155,7 @@ public class Main {
 			Display.update();
 			physDelta = getTime() - lastLoop;
 			lastLoop = getTime();
-			
+
 			physics();
 			Display.sync(60);
 		}
@@ -160,14 +163,16 @@ public class Main {
 
 	private void physics() {
 		camera.process();
+
+		endurance.zeroThrusters();
 		for (int i = 0; i < GROUP_CTL.length; i++)
 			if (Keyboard.isKeyDown(GROUP_CTL[i]))
-				endurance.addGroup(i, 1f);
+				endurance.addGroup(i, 1000f);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-			endurance.addWorldThrust(new Vector3(10.0f, 0, 0));
+			endurance.addWorldThrust(new Vector3(1000.0f, 0, 0));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-			endurance.addWorldThrust(new Vector3(-10.0f, 0, 0));
+			endurance.addWorldThrust(new Vector3(-1000.0f, 0, 0));
 		}
 		endurance.update();
 	}

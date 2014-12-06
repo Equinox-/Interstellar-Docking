@@ -15,7 +15,7 @@ public class Particle {
 		color = new Vector3();
 		pos = new Vector3();
 		vel = new Vector3();
-		end = 0;
+		begin = end = 0;
 	}
 
 	public void render() {

@@ -35,7 +35,7 @@ void main() {
 		float specular = max(0.0, dot(surfaceNormal, reflectionDirection));
 		if (diffuseLightIntensity != 0) {
 			float fspecular = pow(specular, gl_FrontMaterial.shininess) * specularColor.r;
-			gl_FragColor.rgb += fspecular * gl_LightSource[i].specular.rgb;
+			gl_FragColor.rgb += specularColor.r * fspecular * gl_LightSource[i].specular.rgb;
 		}
 	}
 }

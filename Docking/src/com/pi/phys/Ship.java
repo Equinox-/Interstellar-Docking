@@ -114,7 +114,7 @@ public class Ship {
 			GL11.glVertex3f(thrusterPos[t].x, thrusterPos[t].y,
 					thrusterPos[t].z);
 			GL11.glColor3f(1, 0, 0);
-			final float drawMag = thrusterPower[t];
+			final float drawMag = thrusterPower[t] / 10.0f;
 			GL11.glVertex3f(thrusterPos[t].x + drawMag * thrusterDir[t].x,
 					thrusterPos[t].y + drawMag * thrusterDir[t].y,
 					thrusterPos[t].z + drawMag * thrusterDir[t].z);
@@ -202,7 +202,7 @@ public class Ship {
 		if (ctl == null)
 			return;
 		for (int t = 0; t < ctl.length; t++)
-			thrusterPower[ctl[t]] += power;
+			thrusterPower[ctl[t]] += power / ctl.length;
 	}
 
 	public final void addWorldThrust(Vector3 power) {
