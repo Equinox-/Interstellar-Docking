@@ -23,7 +23,7 @@ import com.pi.phys.Ship;
 import com.pi.util.LEInputStream;
 
 public class Main {
-	public static final File dataDir = new File("../Program/data");
+	public static final File dataDir = new File("data");
 
 	private static double physDelta = 0;
 
