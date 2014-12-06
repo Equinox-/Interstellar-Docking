@@ -35,10 +35,7 @@ public class Material {
 
 		public SourceData(LEInputStream in) throws IOException {
 			imageID = in.readIntLE();
-			args.put(0, in.readFloatLE());
-			args.put(1, in.readFloatLE());
-			args.put(2, in.readFloatLE());
-			args.put(3, in.readFloatLE());
+			in.readFloatLE(args, 0, 4);
 		}
 	}
 

@@ -27,18 +27,15 @@ public class Node {
 	public Node(LEInputStream in) throws IOException {
 		children = new int[in.readIntLE()];
 		childRef = new Node[children.length];
-		for (int i = 0; i < children.length; i++)
-			children[i] = in.readIntLE();
+		in.readIntLE(children, 0, children.length);
 
 		meshes = new int[in.readIntLE()];
 		meshRef = new Mesh[meshes.length];
-		for (int i = 0; i < meshes.length; i++)
-			meshes[i] = in.readIntLE();
+		in.readIntLE(meshes, 0, meshes.length);
 
 		if (in.read() != 0) {
 			trans = new Matrix4();
-			for (int i = 0; i < 16; i++)
-				trans.data.put(i, in.readFloatLE());
+			in.readFloatLE(trans.data, 0, 16);
 		} else {
 			trans = Matrix4.identity();
 		}

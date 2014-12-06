@@ -45,7 +45,6 @@ public class Model {
 		nodeTable = new Node[in.readIntLE()];
 		for (int i = 0; i < nodeTable.length; i++)
 			nodeTable[i] = new Node(in);
-
 		in.close();
 
 		for (int i = 0; i < nodeTable.length; i++)
