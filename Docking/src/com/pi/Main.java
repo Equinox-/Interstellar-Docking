@@ -30,7 +30,7 @@ public class Main {
 	private static final long initTime = System.currentTimeMillis();
 
 	public static double getTime() {
-		return (System.currentTimeMillis() - initTime) / 100.0;
+		return 4 * (System.currentTimeMillis() - initTime) / 1000.0;
 	}
 
 	public static double getDelta() {
@@ -38,6 +38,12 @@ public class Main {
 	}
 
 	private static final float HORIZ_FOV = 120;
+
+	private static final float PLANET_SIZE = 1000;
+	private static final float ATMOSPHERE_SCALE = 1.075f;
+	private static final Vector3 PLANET_PLACE = new Vector3(-PLANET_SIZE
+			* ATMOSPHERE_SCALE * .7f, -PLANET_SIZE * ATMOSPHERE_SCALE * .7f,
+			-PLANET_SIZE * ATMOSPHERE_SCALE * .7f);
 
 	public Main() throws LWJGLException, IOException {
 		Display.setDisplayMode(new DisplayMode(800, 800));
@@ -86,17 +92,19 @@ public class Main {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glEnable(GL11.GL_LIGHT0);
+		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, LIGHT0_DIFFUSE);
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, LIGHT0_SPECULAR);
 		GL11.glLightModel(GL11.GL_AMBIENT, LIGHT_AMBIENT);
+//		GL11.glClearColor(1, 1, 1, 1);
 	}
 
 	private void renderPlanet() {
 		GL11.glPushMatrix();
-		GL11.glTranslatef(-200, -200, -200);
+		GL11.glTranslatef(PLANET_PLACE.x, PLANET_PLACE.y, PLANET_PLACE.z);
 		GL11.glRotatef((float) getTime() / 10.0f, 0, 1, 0);
 		{
 			Shaders.PLANET.use();
@@ -105,16 +113,16 @@ public class Main {
 			planetTexture.bind();
 			GL13.glActiveTexture(GL13.GL_TEXTURE1);
 			planetSpecular.bind();
-			GL11.glScalef(300, 300, 300);
+			GL11.glScalef(PLANET_SIZE, PLANET_SIZE, PLANET_SIZE);
 			planet.render();
 			Shaders.noProgram();
-			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDisable(GL11.GL_LIGHTING);
 			Shaders.ATMOSPHERE.use();
-			GL11.glScalef(325.0f / 300.0f, 325.0f / 300.0f, 325.0f / 300.0f);
+			GL11.glScalef(ATMOSPHERE_SCALE, ATMOSPHERE_SCALE, ATMOSPHERE_SCALE);
 			planet.render();
-			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL11.GL_LIGHTING);
+			GL11.glDisable(GL11.GL_BLEND);
 		}
 		GL11.glPopMatrix();
 	}

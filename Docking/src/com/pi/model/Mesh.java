@@ -16,7 +16,7 @@ import com.pi.util.LEInputStream;
 import com.pi.util.SizeOf;
 
 public class Mesh {
-	private static final int VERTEX_STRIDE = 2 + 3 + 3 + 3;
+	private static final int VERTEX_STRIDE = 2 + 3 + 3 + 3 + 3;
 	private static final float AREA_DENSITY = 0.1f;
 
 	private FloatBuffer vertData;
@@ -94,6 +94,8 @@ public class Mesh {
 				* VERTEX_STRIDE, 0);
 		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, true, SizeOf.FLOAT
 				* VERTEX_STRIDE, 8 * SizeOf.FLOAT);
+		GL20.glVertexAttribPointer(4, 3, GL11.GL_FLOAT, true, SizeOf.FLOAT
+				* VERTEX_STRIDE, 11 * SizeOf.FLOAT);
 
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 

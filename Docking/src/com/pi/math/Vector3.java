@@ -85,4 +85,8 @@ public class Vector3 {
 			final Vector3 c) {
 		return mag(cross(lincom(a, 1, b, -1), lincom(c, 1, b, -1))) / 2.0f;
 	}
+
+	public String toString() {
+		return x + "," + y + "," + z;
+	}
 }

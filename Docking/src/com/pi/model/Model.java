@@ -62,6 +62,15 @@ public class Model {
 		}
 		root.computePhysics();
 
+		// Keep it symmetric
+		root.inertiaTensor.data.put(4, 0);
+		root.inertiaTensor.data.put(8, 0);
+		root.inertiaTensor.data.put(9, 0);
+		root.inertiaTensor.data.put(1, root.inertiaTensor.data.get(4));
+		root.inertiaTensor.data.put(2, root.inertiaTensor.data.get(8));
+		root.inertiaTensor.data.put(6, root.inertiaTensor.data.get(9));
+		root.inertiaInverse = Matrix4.invert(root.inertiaTensor);
+
 		System.out.printf("Model Physics: (%s)\n", fname);
 		System.out.printf("Mass: %f\n", root.mass);
 		System.out

@@ -48,7 +48,7 @@ public class Parser {
 
 	public static void main(String[] args) throws Exception {
 		root = new JSONObject(new JSONTokener(new FileReader(new File(
-				"../Docking/data/endurance_png_medium_with_landers.json"))));
+				"../Docking/data/endurance_png_medium.json"))));
 		dout = new DataOutputStream(new FileOutputStream(
 				"../Docking/data/endurance.pack"));
 		buffers = root.getJSONObject("buffers");
@@ -154,8 +154,8 @@ public class Parser {
 		// Write Vertex Data
 		{
 			JSONObject accessors = jsonObject.getJSONObject("accessors");
-			JSONObject[] accessParams = new JSONObject[4];
-			// texture normal vertex tangent
+			JSONObject[] accessParams = new JSONObject[5];
+			// texture normal vertex tangent binormal
 
 			JSONArray attrs = primitives.getJSONArray("vertexAttributes");
 			Map<String, Integer> bufferStride = new HashMap<String, Integer>();
@@ -177,6 +177,8 @@ public class Parser {
 					accessParams[0] = access;
 				else if (style.equals("TEXTANGENT"))
 					accessParams[3] = access;
+				else if (style.equals("TEXBINORMAL"))
+					accessParams[4] = access;
 			}
 
 			int vtxCount = accessParams[0].getInt("count");

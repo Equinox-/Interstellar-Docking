@@ -38,7 +38,7 @@ public class Camera {
 			if (orbitStartCache == null)
 				orbitStartCache = camPos;
 			orbitStartPos = orbitStartCache;
-			if (Vector3.mag(orbitStartPos) > 0.25f) {
+			if (Vector3.mag(orbitStartPos) > 0.4f) {
 				float magA = Vector3.mag(camPos);
 				float magB = Vector3.mag(prevCamPos);
 				if (magA > 0.1 && magB > 0.1) {

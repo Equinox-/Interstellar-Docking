@@ -19,9 +19,9 @@ public class Particle {
 	}
 
 	public void render() {
-		// glColor4f(p.color.x, p.color.y, p.color.z,
-		// 1.0f - (glfwGetTime() - p.begin) / (p.end - p.begin));
-		GL11.glColor3f(1, 1, 1);
+//		GL11.glColor3f(color.x, color.y, color.z,
+//				1.0f - (float) ((Main.getTime() - begin) / (end - begin)));
+		// It is always black >.>
 		GL11.glVertex3f(pos.x, pos.y, pos.z);
 		Vector3.addto(pos, vel, (float) Main.getDelta());
 	}
