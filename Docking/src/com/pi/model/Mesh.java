@@ -7,6 +7,8 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 
 import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
@@ -14,7 +16,7 @@ import com.pi.util.LEInputStream;
 import com.pi.util.SizeOf;
 
 public class Mesh {
-	private static final int VERTEX_STRIDE = 2 + 3 + 3;
+	private static final int VERTEX_STRIDE = 2 + 3 + 3 + 3;
 	private static final float AREA_DENSITY = 0.1f;
 
 	private FloatBuffer vertData;
@@ -41,11 +43,30 @@ public class Mesh {
 
 		material = in.readIntLE();
 		materialRef = null;
-
 		computePhysics();
 	}
 
+	private int indexBuffer = -1, vertexBuffer = -1;
+
+	private void genBuffers() {
+		indexBuffer = GL15.glGenBuffers();
+		vertexBuffer = GL15.glGenBuffers();
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBuffer);
+		vertData.position(0);
+		vertData.limit(vertexCount * VERTEX_STRIDE);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertData, GL15.GL_STATIC_DRAW);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, indexBuffer);
+		indexData.position(0);
+		indexData.limit(indexCount);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, indexData, GL15.GL_STATIC_DRAW);
+	}
+
 	public void render() {
+		if (indexBuffer < 0)
+			genBuffers();
+
 		if (materialRef != null) {
 			materialRef.glBindMaterial();
 			if (materialRef.diffuse.imageID > 0) {
@@ -65,16 +86,22 @@ public class Mesh {
 			}
 		}
 		GL11.glEnable(GL11.GL_VERTEX_ARRAY | GL11.GL_NORMAL_ARRAY
-				| GL11.GL_TEXTURE_COORD_ARRAY);
+				| GL11.GL_TEXTURE_COORD_ARRAY
+				| GL20.GL_VERTEX_ATTRIB_ARRAY_POINTER);
 
-		vertData.limit(vertexCount * VERTEX_STRIDE);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBuffer);
 		GL11.glInterleavedArrays(GL11.GL_T2F_N3F_V3F, SizeOf.FLOAT
-				* VERTEX_STRIDE, vertData);
+				* VERTEX_STRIDE, 0);
+		GL20.glVertexAttribPointer(3, 3, GL11.GL_FLOAT, true, SizeOf.FLOAT
+				* VERTEX_STRIDE, 8 * SizeOf.FLOAT);
 
-		indexData.limit(indexCount);
-		GL11.glDrawElements(GL11.GL_TRIANGLES, indexData);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+		GL11.glDrawElements(GL11.GL_TRIANGLES, indexCount,
+				GL11.GL_UNSIGNED_INT, 0);
 		GL11.glDisable(GL11.GL_VERTEX_ARRAY | GL11.GL_NORMAL_ARRAY
-				| GL11.GL_TEXTURE_COORD_ARRAY);
+				| GL11.GL_TEXTURE_COORD_ARRAY
+				| GL20.GL_VERTEX_ATTRIB_ARRAY_POINTER);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
 
