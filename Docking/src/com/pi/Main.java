@@ -46,7 +46,7 @@ public class Main {
 			-PLANET_SIZE * ATMOSPHERE_SCALE * .7f);
 
 	public Main() throws LWJGLException, IOException {
-		Display.setDisplayMode(new DisplayMode(800, 800));
+		Display.setDisplayMode(new DisplayMode(1920, 1080));
 		Display.setTitle("Docking");
 		Display.create(new PixelFormat(8, 8, 0, 8));
 
@@ -68,7 +68,7 @@ public class Main {
 	private Texture planetSpecular;
 	private Mesh planet;
 
-	private Ship endurance;
+	private Ship endurance, ranger;
 
 	private Camera camera;
 
@@ -86,6 +86,7 @@ public class Main {
 		}
 
 		endurance = new Ship(new File(dataDir, "endurance.pack"));
+		ranger = new Ship(new File(dataDir, "ranger.pack"));
 	}
 
 	private void init() {
@@ -99,7 +100,7 @@ public class Main {
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, LIGHT0_DIFFUSE);
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, LIGHT0_SPECULAR);
 		GL11.glLightModel(GL11.GL_AMBIENT, LIGHT_AMBIENT);
-//		GL11.glClearColor(1, 1, 1, 1);
+		// GL11.glClearColor(1, 1, 1, 1);
 	}
 
 	private void renderPlanet() {
@@ -157,6 +158,7 @@ public class Main {
 
 			Shaders.SHIP.use();
 			endurance.render();
+			ranger.render();
 
 			renderPlanet();
 
@@ -169,20 +171,45 @@ public class Main {
 		}
 	}
 
+	private float thrusterBasePower = 10;
+	private boolean swapLastState;
+	private Ship control;
+
 	private void physics() {
 		camera.process();
 
-		endurance.zeroThrusters();
+		if (control == null) {
+			thrusterBasePower = 10;
+			control = ranger;
+		}
+
+		control.zeroThrusters();
 		for (int i = 0; i < GROUP_CTL.length; i++)
 			if (Keyboard.isKeyDown(GROUP_CTL[i]))
-				endurance.addGroup(i, 1000f);
+				control.addGroup(i, thrusterBasePower);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-			endurance.addWorldThrust(new Vector3(1000.0f, 0, 0));
+			control.addWorldThrust(new Vector3(thrusterBasePower, 0, 0));
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-			endurance.addWorldThrust(new Vector3(-1000.0f, 0, 0));
+			control.addWorldThrust(new Vector3(-thrusterBasePower, 0, 0));
 		}
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
+			if (!swapLastState) {
+				if (control == endurance) {
+					control = ranger;
+					thrusterBasePower = 10;
+				} else if (control == ranger) {
+					control = endurance;
+					thrusterBasePower = 1000;
+				}
+			}
+			swapLastState = true;
+		} else
+			swapLastState = false;
+
 		endurance.update();
+		ranger.update();
 	}
 
 	public static void main(String[] args) throws LWJGLException, IOException {
