@@ -15,12 +15,17 @@ import com.pi.math.Vector3;
 public class BlackHoleEffect {
 	private final float powerStrength;
 	private final float powerRadius;
-	private Vector3 position;
+	private float[] position;
 
-	private RenderTexture renderTexture;
+	public RenderTexture renderTexture;
 
 	public BlackHoleEffect(Vector3 position, float strength, float radius) {
-		this.position = position;
+		this.position = new float[4];
+		this.position[0] = position.x;
+		this.position[1] = position.y;
+		this.position[2] = position.z;
+		this.position[3] = 1;
+
 		this.powerStrength = strength;
 		this.powerRadius = radius;
 	}
@@ -53,19 +58,14 @@ public class BlackHoleEffect {
 		Matrix4 mv = new Matrix4(tmp);
 		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, tmp);
 		Matrix4 proj = new Matrix4(tmp);
-		float[] f = new float[4];
-		f[0] = position.x;
-		f[1] = position.y;
-		f[2] = position.z;
-		f[3] = 1;
-		f = Matrix4.multiply(mv, f);
-		depth = -f[2];
-		depthBuffer = (float) (0.5
-				* (proj.data.get(10) * f[2] + proj.data.get(14)) / depth + 0.5);
-		f = Matrix4.multiply(proj, f);
-		f[0] /= f[3];
-		f[1] /= f[3];
-		f[2] /= f[3];
+		float[] warped = Matrix4.multiply(mv, this.position);
+		depth = -warped[2];
+		warped = Matrix4.multiply(proj, warped);
+		warped[0] /= warped[3];
+		warped[1] /= warped[3];
+		warped[2] /= warped[3];
+		depthBuffer = (0.5f * warped[2] + 0.5f);
+		System.out.println(depthBuffer);
 
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
@@ -77,8 +77,8 @@ public class BlackHoleEffect {
 		GL11.glLoadIdentity();
 
 		Shaders.BLACK_HOLE.use();
-		GL20.glUniform3f(Shaders.BLACK_HOLE.uniform("blackHole"), f[0], f[1],
-				f[2]);
+		GL20.glUniform3f(Shaders.BLACK_HOLE.uniform("blackHole"), warped[0],
+				warped[1], warped[2]);
 		GL20.glUniform4f(Shaders.BLACK_HOLE.uniform("projParams"),
 				proj.data.get(0), proj.data.get(5), proj.data.get(10),
 				proj.data.get(14));

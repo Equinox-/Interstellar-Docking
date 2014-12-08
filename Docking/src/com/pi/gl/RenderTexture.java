@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
 public class RenderTexture {
-	private final int renderWidth, renderHeight;
+	public final int renderWidth, renderHeight;
 	private int colorTexture, depthTexture;
 	private int fbo;
 
@@ -39,9 +39,9 @@ public class RenderTexture {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthTexture);
 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S,
-				GL11.GL_REPEAT);
+				GL12.GL_CLAMP_TO_EDGE);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T,
-				GL11.GL_REPEAT);
+				GL12.GL_CLAMP_TO_EDGE);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
 				GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
@@ -54,7 +54,7 @@ public class RenderTexture {
 				GL11.GL_LEQUAL);
 		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT,
 				renderWidth, renderHeight, 0, GL11.GL_DEPTH_COMPONENT,
-				GL11.GL_UNSIGNED_INT, (ByteBuffer) null);
+				GL11.GL_FLOAT, (ByteBuffer) null);
 
 		fbo = GL30.glGenFramebuffers();
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, fbo);

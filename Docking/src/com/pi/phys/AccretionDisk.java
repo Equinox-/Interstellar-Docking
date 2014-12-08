@@ -71,7 +71,7 @@ public class AccretionDisk {
 					particles[i].pos.z);
 		}
 		GL11.glEnd();
-		GL11.glEnd();
+		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glPopMatrix();
 	}
 }

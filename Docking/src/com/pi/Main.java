@@ -1,8 +1,13 @@
 package com.pi;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+
+import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
@@ -14,9 +19,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 import com.pi.gl.BlackHoleEffect;
 import com.pi.gl.Camera;
-import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
-import com.pi.model.Texture;
 import com.pi.phys.AccretionDisk;
 import com.pi.phys.CelestialBody;
 import com.pi.phys.Ship;
@@ -93,7 +96,7 @@ public class Main {
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, LIGHT0_DIFFUSE);
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, LIGHT0_SPECULAR);
 		GL11.glLightModel(GL11.GL_AMBIENT, LIGHT_AMBIENT);
-//		GL11.glClearColor(1, 1, 1, 1);
+		// GL11.glClearColor(1, 1, 1, 1);
 	}
 
 	private static final int[] GROUP_CTL = { Keyboard.KEY_D, Keyboard.KEY_A,
@@ -116,7 +119,8 @@ public class Main {
 		double lastLoop = getTime();
 		while (!Display.isCloseRequested()) {
 
-			windowResized(Display.getWidth(), Display.getHeight(), effect.depth * 0.5f);
+			windowResized(Display.getWidth(), Display.getHeight(),
+					effect.depth * 0.5f);
 			effect.preRender();
 			GL11.glClearDepth(1);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -126,7 +130,7 @@ public class Main {
 			GL11.glClearDepth(effect.depthBuffer);
 			windowResized(Display.getWidth(), Display.getHeight(), 1);
 			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-//			doRender();
+			// doRender();
 
 			Display.update();
 
@@ -144,7 +148,7 @@ public class Main {
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glLoadIdentity();
 		camera.glApply();
-
+		GL11.glPushMatrix();
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
 
 		// Shaders.SHIP.use();
@@ -154,6 +158,7 @@ public class Main {
 		// planet.render();
 		// GL11.glFlush();
 		disk.render();
+		GL11.glPopMatrix();
 	}
 
 	private float thrusterBasePower = 10;

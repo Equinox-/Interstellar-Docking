@@ -11,25 +11,17 @@ uniform float powerRadius;
 uniform float powerStrength;
 
 float affectMultipler(vec2 frag) {
-	float bHoleDepth = projParams.w / (blackHole.z + projParams.z);
-	float dv = texture2D(depth, frag / screenSize).x;
-	float cDepth = projParams.w / ((2 * dv - 1) + projParams.z);
-	float scale = (cDepth - bHoleDepth) / 100;
+	float bHoleDepth = blackHole.z;
+	float dv = texture2D(depth, frag / screenSize).x + .5;
+	float scale = (dv - bHoleDepth);
 	return (scale < 0 ? 0 : (scale > 1 ? 1 : scale));
 }
 
 void main() {
-//	if (blackHole.z > 0) {
-//		gl_FragColor = texture2D(color, gl_TexCoord[0].st);
-//		gl_FragColor.a = 1;
-//		return;
-//	}
 	vec2 pos = gl_TexCoord[0].st * screenSize;
-	//	(float) (0.5 * (proj.data.get(10) * f[2] + proj.data.get(14))
-	// 	/ -f[2] + 0.5);
-	float bHoleDV = 0.5 * blackHole.z + 0.5;
+	float bHoleDV = blackHole.z;
 	float bHoleDepth = projParams.w / (blackHole.z + projParams.z);
-	float dv = texture2D(depth, pos / screenSize).x;
+	float dv = texture2D(depth, gl_TexCoord[0].st).x + .5;
 	float cDepth = projParams.w / ((2 * dv - 1) + projParams.z);
 
 	vec2 blackHoleScreen = (blackHole.xy + 1) * (screenSize / 2);
@@ -45,14 +37,8 @@ void main() {
 	vec2 newPos = pos
 			+ vec2(newBeam.x, newBeam.y) * powerRadius * powerStrength
 					* affectMultipler(pos);
-	
-	if (dv < bHoleDV) {
-		gl_FragColor = vec4(0);
-		return;
-	}
 
 	gl_FragColor = texture2D(color, newPos / screenSize);
 	gl_FragColor *= length(newBeam);
-//	gl_FragColor = vec4(affectMultipler(pos));
 	gl_FragColor.a = 1.0f;
 }
