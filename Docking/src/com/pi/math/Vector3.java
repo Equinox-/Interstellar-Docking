@@ -61,7 +61,8 @@ public class Vector3 {
 		return (float) Math.sqrt(mag2(v));
 	}
 
-	public static Vector3 normalize(Vector3 v) {
+	public static Vector3 normalize(Vector3 o) {
+		Vector3 v = new Vector3(o.x, o.y, o.z);
 		float outMag = mag(v);
 		v.x /= outMag;
 		v.y /= outMag;

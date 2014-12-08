@@ -53,8 +53,8 @@ public class GravDistort {
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	private BlackHoleEffect effect = new BlackHoleEffect(new Vector3(), 10000,
-			10000);
+	private BlackHoleEffect effect = new BlackHoleEffect(new Vector3(), 10,
+			10);
 
 	private void run() {
 		while (!Display.isCloseRequested()) {

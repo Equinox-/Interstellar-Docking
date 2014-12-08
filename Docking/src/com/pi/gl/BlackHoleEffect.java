@@ -1,7 +1,6 @@
 package com.pi.gl;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
@@ -61,8 +60,8 @@ public class BlackHoleEffect {
 		f[3] = 1;
 		f = Matrix4.multiply(mv, f);
 		depth = -f[2];
-		depthBuffer = (float) (0.5 * (proj.data.get(10) * f[2] + proj.data.get(14))
-				/ depth + 0.5);
+		depthBuffer = (float) (0.5
+				* (proj.data.get(10) * f[2] + proj.data.get(14)) / depth + 0.5);
 		f = Matrix4.multiply(proj, f);
 		f[0] /= f[3];
 		f[1] /= f[3];
@@ -83,7 +82,6 @@ public class BlackHoleEffect {
 		GL20.glUniform4f(Shaders.BLACK_HOLE.uniform("projParams"),
 				proj.data.get(0), proj.data.get(5), proj.data.get(10),
 				proj.data.get(14));
-
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderTexture.getColorTexture());
