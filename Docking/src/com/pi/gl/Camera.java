@@ -9,7 +9,7 @@ import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
 
 public class Camera {
-	private float offset;
+	public float offset;
 	private Matrix4 pose;
 
 	public Camera() {

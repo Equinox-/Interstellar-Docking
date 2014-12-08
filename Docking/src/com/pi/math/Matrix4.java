@@ -11,6 +11,12 @@ public class Matrix4 {
 		data = BufferUtils.createFloatBuffer(16);
 	}
 
+	public Matrix4(FloatBuffer f) {
+		this();
+		for (int i = 0; i < 16; i++)
+			data.put(i, f.get(i));
+	}
+
 	public static Matrix4 identity() {
 		Matrix4 res = new Matrix4();
 		for (int i = 0; i < 16; i++)
@@ -47,6 +53,19 @@ public class Matrix4 {
 				+ a.data.get(13);
 		res.z = a.data.get(2) * v.x + a.data.get(6) * v.y + a.data.get(10)
 				* v.z + a.data.get(14);
+		return res;
+	}
+
+	public static float[] multiply(final Matrix4 a, final float[] v) {
+		float[] res = new float[4];
+		res[0] = a.data.get(0) * v[0] + a.data.get(4) * v[1] + a.data.get(8)
+				* v[2] + a.data.get(12) * v[3];
+		res[1] = a.data.get(1) * v[0] + a.data.get(5) * v[1] + a.data.get(9)
+				* v[2] + a.data.get(13) * v[3];
+		res[2] = a.data.get(2) * v[0] + a.data.get(6) * v[1] + a.data.get(10)
+				* v[2] + a.data.get(14) * v[3];
+		res[3] = a.data.get(3) * v[0] + a.data.get(7) * v[1] + a.data.get(11)
+				* v[2] + a.data.get(15) * v[3];
 		return res;
 	}
 
@@ -237,7 +256,7 @@ public class Matrix4 {
 
 	public static void print(final Matrix4 mat) {
 		for (int i = 0; i < 4; i++) {
-			System.out.printf("%0.10f %0.10f %0.10f %0.10f\n", mat.data.get(i),
+			System.out.printf("%f %f %f %f\n", mat.data.get(i),
 					mat.data.get(i + 4), mat.data.get(i + 8),
 					mat.data.get(i + 12));
 		}

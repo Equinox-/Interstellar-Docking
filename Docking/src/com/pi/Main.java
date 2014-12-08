@@ -1,8 +1,8 @@
 package com.pi;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
@@ -11,16 +11,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
+import com.pi.gl.BlackHoleEffect;
 import com.pi.gl.Camera;
 import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
-import com.pi.model.Mesh;
 import com.pi.model.Texture;
+import com.pi.phys.CelestialBody;
 import com.pi.phys.Ship;
-import com.pi.util.LEInputStream;
 
 public class Main {
 	public static final File dataDir = new File("data");
@@ -39,14 +38,8 @@ public class Main {
 
 	private static final float HORIZ_FOV = 120;
 
-	private static final float PLANET_SIZE = 1000;
-	private static final float ATMOSPHERE_SCALE = 1.075f;
-	private static final Vector3 PLANET_PLACE = new Vector3(-PLANET_SIZE
-			* ATMOSPHERE_SCALE * .7f, -PLANET_SIZE * ATMOSPHERE_SCALE * .7f,
-			-PLANET_SIZE * ATMOSPHERE_SCALE * .7f);
-
 	public Main() throws LWJGLException, IOException {
-		Display.setDisplayMode(new DisplayMode(1920, 1080));
+		Display.setDisplayMode(new DisplayMode(1280, 720));
 		Display.setTitle("Docking");
 		Display.create(new PixelFormat(8, 8, 0, 8));
 
@@ -55,38 +48,38 @@ public class Main {
 		run();
 	}
 
-	private void windowResized(int width, int height) {
+	private void windowResized(int width, int height, float near) {
 		GL11.glViewport(0, 0, width, height);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
 		final float tanV = (float) Math.tan(HORIZ_FOV * Math.PI / 360.0);
 		final float aspect = height / (float) width;
-		GL11.glFrustum(-tanV, tanV, -tanV * aspect, tanV * aspect, 1, 1000);
+		GL11.glFrustum(-tanV * near, tanV * near, -tanV * aspect * near, tanV
+				* aspect * near, near, 1000);
 	}
 
-	private Texture planetTexture;
-	private Texture planetSpecular;
-	private Mesh planet;
+	private CelestialBody planet;
 
 	private Ship endurance, ranger;
 
 	private Camera camera;
 
+	private BlackHoleEffect effect = new BlackHoleEffect(new Vector3(-50,
+			-50, -50), 1000, 100);
+
 	private void load() throws IOException {
 		camera = new Camera();
+		camera.offset = -3;
 
 		{
-			LEInputStream in = new LEInputStream(new FileInputStream(new File(
-					dataDir, "sphere.lpack")));
-			planet = new Mesh(in);
-			in.close();
-			planetTexture = new Texture(new File(dataDir, "tex/ice_planet.png"));
-			planetSpecular = new Texture(new File(dataDir,
-					"tex/ice_planet.spec.png"));
+			planet = new CelestialBody(1000, 1.075f, 1200, new Vector3(-1000,
+					-1000, -1000), new Texture(new File(dataDir,
+					"tex/ice_planet.png")), new Texture(new File(dataDir,
+					"tex/ice_planet.spec.png")));
 		}
 
 		endurance = new Ship(new File(dataDir, "endurance.pack"));
-		ranger = new Ship(new File(dataDir, "ranger.pack"));
+		ranger = new Ship(new File(dataDir, "lander.pack"));
 	}
 
 	private void init() {
@@ -100,32 +93,7 @@ public class Main {
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, LIGHT0_DIFFUSE);
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, LIGHT0_SPECULAR);
 		GL11.glLightModel(GL11.GL_AMBIENT, LIGHT_AMBIENT);
-		// GL11.glClearColor(1, 1, 1, 1);
-	}
-
-	private void renderPlanet() {
-		GL11.glPushMatrix();
-		GL11.glTranslatef(PLANET_PLACE.x, PLANET_PLACE.y, PLANET_PLACE.z);
-		GL11.glRotatef((float) getTime() / 10.0f, 0, 1, 0);
-		{
-			Shaders.PLANET.use();
-			GL11.glEnable(GL11.GL_TEXTURE_2D);
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			planetTexture.bind();
-			GL13.glActiveTexture(GL13.GL_TEXTURE1);
-			planetSpecular.bind();
-			GL11.glScalef(PLANET_SIZE, PLANET_SIZE, PLANET_SIZE);
-			planet.render();
-			Shaders.noProgram();
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			Shaders.ATMOSPHERE.use();
-			GL11.glScalef(ATMOSPHERE_SCALE, ATMOSPHERE_SCALE, ATMOSPHERE_SCALE);
-			planet.render();
-			GL11.glEnable(GL11.GL_LIGHTING);
-			GL11.glDisable(GL11.GL_BLEND);
-		}
-		GL11.glPopMatrix();
+//		GL11.glClearColor(1, 1, 1, 1);
 	}
 
 	private static final int[] GROUP_CTL = { Keyboard.KEY_D, Keyboard.KEY_A,
@@ -147,28 +115,42 @@ public class Main {
 	private void run() {
 		double lastLoop = getTime();
 		while (!Display.isCloseRequested()) {
-			windowResized(Display.getWidth(), Display.getHeight());
 
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-			GL11.glLoadIdentity();
-			camera.glApply();
-
-			GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
+			windowResized(Display.getWidth(), Display.getHeight(),
+					effect.depth);
+			effect.preRender();
+			GL11.glClearDepth(1);
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-			Shaders.SHIP.use();
-			endurance.render();
-			ranger.render();
-
-			renderPlanet();
+			doRender();
+			windowResized(Display.getWidth(), Display.getHeight(), 1);
+			effect.postRender();
+			GL11.glClearDepth(effect.depthBuffer);
+			windowResized(Display.getWidth(), Display.getHeight(), 1);
+			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+			doRender();
 
 			Display.update();
+
 			physDelta = getTime() - lastLoop;
 			lastLoop = getTime();
-
 			physics();
 			Display.sync(60);
 		}
+	}
+
+	private void doRender() {
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		GL11.glLoadIdentity();
+		camera.glApply();
+
+		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
+
+		Shaders.SHIP.use();
+		endurance.render();
+		ranger.render();
+
+		planet.render();
+		GL11.glFlush();
 	}
 
 	private float thrusterBasePower = 10;

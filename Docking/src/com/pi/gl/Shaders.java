@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL20;
 import com.pi.Main;
 
 public enum Shaders {
-	SHIP("ship"), PLANET("planet"), ATMOSPHERE("atm");
+	SHIP("ship"), PLANET("planet"), ATMOSPHERE("atm"), BLACK_HOLE("bhole");
 	private final String fname;
 	private int program;
 
@@ -36,7 +36,7 @@ public enum Shaders {
 		}
 	}
 
-	public void use() {
+	private void ensureLoaded() {
 		if (program == 0) {
 			program = GL20.glCreateProgram();
 			int vertexShader = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
@@ -68,7 +68,16 @@ public enum Shaders {
 			GL20.glDeleteShader(vertexShader);
 			GL20.glDeleteShader(fragmentShader);
 		}
+	}
+
+	public void use() {
+		ensureLoaded();
 		GL20.glUseProgram(program);
+	}
+
+	public int uniform(final String label) {
+		ensureLoaded();
+		return GL20.glGetUniformLocation(program, label);
 	}
 
 	public static void noProgram() {
