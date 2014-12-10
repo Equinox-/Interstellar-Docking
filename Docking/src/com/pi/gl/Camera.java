@@ -81,8 +81,8 @@ public class Camera {
 	}
 
 	public void glApply() {
-		GL11.glTranslatef(0, 0, offset);
-		GL11.glMultMatrix(pose.data);
+		MatrixStack.glTranslatef(0, 0, offset);
+		MatrixStack.glMultMatrix(pose);
 	}
 
 	public void glRotateInverse() {

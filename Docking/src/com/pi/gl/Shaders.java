@@ -13,6 +13,10 @@ import com.pi.Main;
 public enum Shaders {
 	SHIP("ship"), PLANET("planet"), ATMOSPHERE("atm"), BLACK_HOLE("bhole"), ACCRETION_DISK(
 			"adisk");
+	private static Shaders current = null;
+
+	private int modelview, normal, projection;
+
 	private final String fname;
 	private int program;
 
@@ -65,15 +69,31 @@ public enum Shaders {
 			if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
 				System.err.println("Shader program wasn't linked correctly.");
 				System.err.println(GL20.glGetProgramInfoLog(program, 1024));
+				throw new RuntimeException();
 			}
 			GL20.glDeleteShader(vertexShader);
 			GL20.glDeleteShader(fragmentShader);
+
+			getMatrixAddrs();
 		}
+	}
+
+	private void getMatrixAddrs() {
+		projection = uniform("projection");
+		if (projection == -1)
+			System.err.println("Missing projection from " + this);
+
+		modelview = uniform("modelview");
+		if (modelview == -1)
+			System.err.println("Missing modelview from " + this);
+
+		normal = uniform("nrmMatrix");
 	}
 
 	public void use() {
 		ensureLoaded();
 		GL20.glUseProgram(program);
+		current = this;
 	}
 
 	public int uniform(final String label) {
@@ -83,5 +103,22 @@ public enum Shaders {
 
 	public static void noProgram() {
 		GL20.glUseProgram(0);
+		current = null;
+	}
+
+	public static Shaders current() {
+		return current;
+	}
+
+	public int getProjectionAddr() {
+		return projection;
+	}
+
+	public int getNormalAddr() {
+		return normal;
+	}
+
+	public int getModelviewAddr() {
+		return modelview;
 	}
 }

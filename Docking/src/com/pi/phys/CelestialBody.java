@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import com.pi.Main;
+import com.pi.gl.MatrixStack;
 import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
 import com.pi.model.Mesh;
@@ -45,11 +46,13 @@ public class CelestialBody {
 	}
 
 	public void render() {
-		GL11.glPushMatrix();
-		GL11.glTranslatef(place.x, place.y, place.z);
-		GL11.glRotatef((float) Main.getTime() * 360.0f / period, 0, 1, 0);
+		MatrixStack.glPushMatrix();
+		MatrixStack.glTranslatef(place.x, place.y, place.z);
+		MatrixStack.glRotatef((float) Main.getTime() * 360.0f / period, 0, 1, 0);
 		{
 			Shaders.PLANET.use();
+			MatrixStack.commit();
+			
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			diffuse.bind();
@@ -68,6 +71,6 @@ public class CelestialBody {
 				GL11.glDisable(GL11.GL_BLEND);
 			}
 		}
-		GL11.glPopMatrix();
+		MatrixStack.glPopMatrix();
 	}
 }

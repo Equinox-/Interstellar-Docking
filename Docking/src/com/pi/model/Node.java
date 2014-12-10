@@ -2,8 +2,7 @@ package com.pi.model;
 
 import java.io.IOException;
 
-import org.lwjgl.opengl.GL11;
-
+import com.pi.gl.MatrixStack;
 import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
 import com.pi.util.LEInputStream;
@@ -60,13 +59,14 @@ public class Node {
 	}
 
 	public void render() {
-		GL11.glPushMatrix();
-		GL11.glMultMatrix(trans.data);
+		MatrixStack.glPushMatrix();
+		MatrixStack.glMultMatrix(trans);
+		MatrixStack.commitModelview();
 		for (Mesh m : meshRef)
 			m.render();
 		for (Node n : childRef)
 			n.render();
-		GL11.glPopMatrix();
+		MatrixStack.glPopMatrix();
 	}
 
 	void updateRefs(Node[] nodeTable, Mesh[] meshTable) {

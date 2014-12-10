@@ -63,9 +63,9 @@ public class RenderTexture {
 					GL14.GL_TEXTURE_COMPARE_MODE, GL14.GL_COMPARE_R_TO_TEXTURE);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL14.GL_TEXTURE_COMPARE_FUNC, GL11.GL_LEQUAL);
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT,
-					renderWidth, renderHeight, 0, GL11.GL_DEPTH_COMPONENT,
-					GL11.GL_FLOAT, (ByteBuffer) null);
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_DEPTH24_STENCIL8,
+					renderWidth, renderHeight, 0, GL30.GL_DEPTH24_STENCIL8,
+					GL11.GL_UNSIGNED_INT, (ByteBuffer) null);
 		}
 
 		fbo = GL30.glGenFramebuffers();

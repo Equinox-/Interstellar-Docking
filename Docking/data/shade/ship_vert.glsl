@@ -8,12 +8,17 @@ varying vec3 varyingTangent;
 varying vec3 varyingBinormal;
 varying vec4 varyingVertex;
 
+uniform mat4 projection, modelview;
+uniform mat4 nrmMatrix;
+
 void main() {
+	mat3 normalMatrix = mat3(nrmMatrix);
+	
 	gl_TexCoord[0] = gl_MultiTexCoord0;
-	varyingNormal = gl_NormalMatrix * gl_Normal;
-	varyingTangent = gl_NormalMatrix * tangent;
-	varyingBinormal = gl_NormalMatrix * binormal;
-	varyingVertex = gl_ModelViewMatrix * gl_Vertex;
-	gl_Position = ftransform();
+	varyingNormal = normalMatrix * gl_Normal;
+	varyingTangent = normalMatrix * tangent;
+	varyingBinormal = normalMatrix * binormal;
+	varyingVertex = modelview * gl_Vertex;
+	gl_Position = projection * varyingVertex;
 }
 

@@ -56,8 +56,7 @@ public class Model {
 				root = nodeTable[i];
 			}
 		if (rootCount > 1) {
-			System.out.printf("Multiple root node\n");
-			System.exit(1);
+			throw new RuntimeException("Multiple root nodes.");
 		}
 		root.computePhysics();
 

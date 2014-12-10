@@ -21,6 +21,12 @@ public class Vector3 {
 		this.z = f.get(i + 2);
 	}
 
+	public void write(FloatBuffer f, int i) {
+		f.put(i, x);
+		f.put(i + 1, y);
+		f.put(i + 2, z);
+	}
+
 	public static Vector3 add(final Vector3 a, final Vector3 b) {
 		return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
 	}

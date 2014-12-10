@@ -16,9 +16,9 @@ void main() {
 	}
 	vec2 pos = gl_TexCoord[0].st * screenSize;
 	float bHoleDV = blackHole.z;
-	float bHoleDepth = projParams.w / (blackHole.z + projParams.z);
+	float bHoleDepth = projParams.w / ((blackHole.z * 2 - 1) + projParams.z);
 	float dv = texture2D(depth, gl_TexCoord[0].st).x + .5;
-	float realDepth = projParams.w / (dv + projParams.z);
+	float realDepth = projParams.w / ((dv * 2 - 1) + projParams.z);
 
 	float screenRadius = (powerRadius * 10 * -projParams.w);
 
@@ -38,10 +38,14 @@ void main() {
 	// Something dealing with things in front of the blackhole.
 	if (bHoleDV > dv) {
 		gl_FragColor = texture2D(color, gl_TexCoord[0].st)
-				* pow((bHoleDV - dv), 2) * 0.1
-				* length(
-						vec3(balanced, screenRadius * (realDepth - bHoleDepth)))
-				/ screenRadius;
+				* min(1,
+						pow((bHoleDV - dv), 2) * 0.1
+								* length(
+										vec3(balanced,
+												screenRadius
+														* (realDepth
+																- bHoleDepth)))
+								/ screenRadius);
 	}
 	vec2 newPos = pos + vec2(newBeam.x, newBeam.y) * powerRadius * 100;
 

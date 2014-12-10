@@ -6,6 +6,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
@@ -15,6 +16,19 @@ import com.pi.math.Vector3;
 public class BlackHoleEffect {
 	private final float powerRadius;
 	private float[] position;
+	private static final FloatBuffer QUAD_BUFFER = BufferUtils
+			.createFloatBuffer(20);
+	static {
+		QUAD_BUFFER.put(new float[] { 0, 0 });
+		QUAD_BUFFER.put(new float[] { 0, 0, 0 });
+		QUAD_BUFFER.put(new float[] { 1, 0 });
+		QUAD_BUFFER.put(new float[] { 1, 0, 0 });
+		QUAD_BUFFER.put(new float[] { 1, 1 });
+		QUAD_BUFFER.put(new float[] { 1, 1, 0 });
+		QUAD_BUFFER.put(new float[] { 0, 1 });
+		QUAD_BUFFER.put(new float[] { 0, 1, 0 });
+		QUAD_BUFFER.flip();
+	}
 
 	public RenderTexture renderTexture;
 
@@ -45,15 +59,20 @@ public class BlackHoleEffect {
 		renderTexture.bindRender();
 	}
 
-	private final FloatBuffer tmp = BufferUtils.createFloatBuffer(16);
-
 	public float depth, depthBuffer;
 
+	private int vboHandle = -1;
+
 	public void postRender() {
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, tmp);
-		Matrix4 mv = new Matrix4(tmp);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, tmp);
-		Matrix4 proj = new Matrix4(tmp);
+		if (vboHandle == -1) {
+			vboHandle = GL15.glGenBuffers();
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
+			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, QUAD_BUFFER,
+					GL15.GL_STATIC_DRAW);
+		}
+
+		Matrix4 mv = MatrixStack.getModelView();
+		Matrix4 proj = MatrixStack.getProjection();
 		float[] warped = Matrix4.multiply(mv, this.position);
 		depth = -warped[2];
 		warped = Matrix4.multiply(proj, warped);
@@ -65,11 +84,8 @@ public class BlackHoleEffect {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 1, 0, 1, -1, 1);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
+		MatrixStack.glOrtho(0, 1, 0, 1, -1, 1);
+		MatrixStack.glLoadIdentity();
 
 		Shaders.BLACK_HOLE.use();
 		GL20.glUniform3f(Shaders.BLACK_HOLE.uniform("blackHole"), warped[0],
@@ -77,22 +93,24 @@ public class BlackHoleEffect {
 		GL20.glUniform4f(Shaders.BLACK_HOLE.uniform("projParams"),
 				proj.data.get(0), proj.data.get(5), proj.data.get(10),
 				proj.data.get(14));
+		MatrixStack.commit();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderTexture.getColorTexture());
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderTexture.getDepthTexture());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glTexCoord2f(0, 0);
-		GL11.glVertex3f(0, 0, 0);
-		GL11.glTexCoord2f(1, 0);
-		GL11.glVertex3f(1, 0, 0);
-		GL11.glTexCoord2f(1, 1);
-		GL11.glVertex3f(1, 1, 0);
-		GL11.glTexCoord2f(0, 1);
-		GL11.glVertex3f(0, 1, 0);
-		GL11.glEnd();
+
+		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY
+				| GL11.GL_TEXTURE_COORD_ARRAY);
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
+
+		GL11.glInterleavedArrays(GL11.GL_T2F_V3F, 0, 0);
+		GL11.glDrawArrays(GL11.GL_QUADS, 0, 1);
+
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY
+				| GL11.GL_TEXTURE_COORD_ARRAY);
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
 	}
 }

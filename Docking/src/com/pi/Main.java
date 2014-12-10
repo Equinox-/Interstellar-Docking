@@ -14,6 +14,8 @@ import org.lwjgl.opengl.PixelFormat;
 
 import com.pi.gl.BlackHoleEffect;
 import com.pi.gl.Camera;
+import com.pi.gl.MatrixStack;
+import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
 import com.pi.phys.AccretionDisk;
 import com.pi.phys.CelestialBody;
@@ -48,12 +50,10 @@ public class Main {
 
 	private void windowResized(int width, int height, float near) {
 		GL11.glViewport(0, 0, width, height);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
 		final float tanV = (float) Math.tan(HORIZ_FOV * Math.PI / 360.0);
 		final float aspect = height / (float) width;
-		GL11.glFrustum(-tanV * near, tanV * near, -tanV * aspect * near, tanV
-				* aspect * near, near, 10000);
+		MatrixStack.glFrustum(-tanV * near, tanV * near, -tanV * aspect * near,
+				tanV * aspect * near, near, 10000);
 	}
 
 	private CelestialBody planet;
@@ -62,8 +62,8 @@ public class Main {
 
 	private Camera camera;
 
-	private Vector3 bhole = Vector3
-			.multiply(new Vector3(-1000, 1000, -1000), 0);
+	private Vector3 bhole = new Vector3(0, 0, 0);// new Vector3(-1000, 1000,
+													// -1000);
 	private BlackHoleEffect effect = new BlackHoleEffect(bhole, 100);
 	private AccretionDisk disk = new AccretionDisk(1000, 100, bhole,
 			new Vector3(1, 0, 0));
@@ -79,7 +79,7 @@ public class Main {
 		// "tex/ice_planet.spec.png")));
 		// }
 		//
-		// endurance = new Ship(new File(dataDir, "endurance.pack"));
+//		endurance = new Ship(new File(dataDir, "endurance.pack"));
 		// ranger = new Ship(new File(dataDir, "lander.pack"));
 	}
 
@@ -115,20 +115,15 @@ public class Main {
 
 	private void run() {
 		double lastLoop = getTime();
+		long lastSecond = System.currentTimeMillis();
+		int frames = 0;
 		while (!Display.isCloseRequested()) {
 
-			windowResized(Display.getWidth(), Display.getHeight(),
-					effect.depth * 0.5f);
-			effect.preRender();
-			GL11.glClearDepth(1);
+			windowResized(Display.getWidth(), Display.getHeight(), 1);
+			// effect.preRender();
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			doRender();
-			windowResized(Display.getWidth(), Display.getHeight(), 1);
-			effect.postRender();
-			GL11.glClearDepth(effect.depthBuffer);
-			windowResized(Display.getWidth(), Display.getHeight(), 1);
-			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-			// doRender();
+			// effect.postRender();
 
 			Display.update();
 
@@ -136,23 +131,29 @@ public class Main {
 			lastLoop = getTime();
 			physics();
 			Display.sync(60);
+			frames++;
+			if (lastSecond + 1000 < System.currentTimeMillis()) {
+				Display.setTitle((frames * 1000 / (System.currentTimeMillis() - lastSecond))
+						+ " FPS");
+				lastSecond = System.currentTimeMillis();
+				frames = 0;
+			}
 		}
 	}
 
 	private void doRender() {
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
+		MatrixStack.glLoadIdentity();
 		camera.glApply();
-		GL11.glPushMatrix();
+		MatrixStack.glPushMatrix();
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
 		disk.render();
 
-		// Shaders.SHIP.use();
-		// endurance.render();
+//		Shaders.SHIP.use();
+//		endurance.render();
 		// ranger.render();
 
 		// planet.render();
-		GL11.glPopMatrix();
+		MatrixStack.glPopMatrix();
 	}
 
 	private float thrusterBasePower = 10;

@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.lwjgl.opengl.GL11;
 
 import com.pi.Main;
+import com.pi.gl.MatrixStack;
 import com.pi.gl.Shaders;
 import com.pi.math.Matrix4;
 import com.pi.math.Quaternion;
@@ -91,43 +92,44 @@ public class Ship {
 	}
 
 	public void render() {
-		GL11.glPushMatrix();
-		GL11.glTranslatef(pos.x, pos.y, pos.z);
-		GL11.glMultMatrix(rotMatrix.data);
-		GL11.glTranslatef(-model.getCOM().x, -model.getCOM().y,
+		MatrixStack.glPushMatrix();
+		MatrixStack.glTranslatef(pos.x, pos.y, pos.z);
+		MatrixStack.glMultMatrix(rotMatrix);
+		MatrixStack.glTranslatef(-model.getCOM().x, -model.getCOM().y,
 				-model.getCOM().z);
 
 		Shaders.SHIP.use();
-		GL11.glColor3f(1, 1, 1);
+		MatrixStack.commitProjection();
 		model.render();
+		MatrixStack.commitModelview(); // Make sure we backed out
 
 		Shaders.noProgram();
 
 		// Render thrusters
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glBegin(GL11.GL_LINES);
-		for (int t = 0; t < thrusterPower.length; t++) {
-			GL11.glColor3f(0, 1, 0);
-			GL11.glVertex3f(thrusterPos[t].x, thrusterPos[t].y,
-					thrusterPos[t].z);
-			GL11.glColor3f(1, 0, 0);
-			final float drawMag = thrusterPower[t] / 100.0f;
-			GL11.glVertex3f(thrusterPos[t].x + drawMag * thrusterDir[t].x,
-					thrusterPos[t].y + drawMag * thrusterDir[t].y,
-					thrusterPos[t].z + drawMag * thrusterDir[t].z);
-		}
-		GL11.glEnd();
-		GL11.glPopMatrix();
+//		GL11.glDisable(GL11.GL_LIGHTING);
+//		GL11.glBegin(GL11.GL_LINES);
+//		for (int t = 0; t < thrusterPower.length; t++) {
+//			GL11.glColor3f(0, 1, 0);
+//			GL11.glVertex3f(thrusterPos[t].x, thrusterPos[t].y,
+//					thrusterPos[t].z);
+//			GL11.glColor3f(1, 0, 0);
+//			final float drawMag = thrusterPower[t] / 100.0f;
+//			GL11.glVertex3f(thrusterPos[t].x + drawMag * thrusterDir[t].x,
+//					thrusterPos[t].y + drawMag * thrusterDir[t].y,
+//					thrusterPos[t].z + drawMag * thrusterDir[t].z);
+//		}
+//		GL11.glEnd();
+		MatrixStack.glPopMatrix();
 
-		GL11.glPointSize(3);
-		GL11.glBegin(GL11.GL_POINTS);
-		final float ctime = (float) Main.getTime();
-		for (int i = 0; i < PARTICLE_COUNT; i++)
-			if (particles[i].end > ctime)
-				particles[i].render();
-		GL11.glEnd();
-		GL11.glPointSize(1);
-		GL11.glEnable(GL11.GL_LIGHTING);
+//		GL11.glPointSize(3);
+//		GL11.glBegin(GL11.GL_POINTS);
+//		final float ctime = (float) Main.getTime();
+//		for (int i = 0; i < PARTICLE_COUNT; i++)
+//			if (particles[i].end > ctime)
+//				particles[i].render();
+//		GL11.glEnd();
+//		GL11.glPointSize(1);
+//		GL11.glEnable(GL11.GL_LIGHTING);
 	}
 
 	public void update() {

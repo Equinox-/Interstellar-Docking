@@ -7,6 +7,9 @@ import org.lwjgl.BufferUtils;
 public class Matrix4 {
 	public final FloatBuffer data;
 
+	private static final float[] CLEAR_ARRAY = new float[16];
+	private static final float[] TMP_ARRAY = new float[16];
+
 	public Matrix4() {
 		data = BufferUtils.createFloatBuffer(16);
 	}
@@ -19,9 +22,6 @@ public class Matrix4 {
 
 	public static Matrix4 identity() {
 		Matrix4 res = new Matrix4();
-		for (int i = 0; i < 16; i++)
-			res.data.put(i, 0);
-
 		res.data.put(0, 1);
 		res.data.put(5, 1);
 		res.data.put(10, 1);
@@ -29,20 +29,45 @@ public class Matrix4 {
 		return res;
 	}
 
+	public void zero() {
+		this.data.position(0);
+		this.data.put(CLEAR_ARRAY);
+		this.data.position(0);
+	}
+
+	public void makeIdentity() {
+		zero();
+		data.put(0, 1);
+		data.put(5, 1);
+		data.put(10, 1);
+		data.put(15, 1);
+	}
+
+	private static void multiplyInto(final Matrix4 dest, final Matrix4 a,
+			final Matrix4 b) {
+		for (int i = 0; i < 4; i++) {
+			final int j = i << 2;
+			final float ai0 = a.data.get(j), ai1 = a.data.get(j + 1), ai2 = a.data
+					.get(j + 2), ai3 = a.data.get(j + 3);
+			dest.data.put(j, ai0 * b.data.get(0) + ai1 * b.data.get(4 + 0)
+					+ ai2 * b.data.get(8 + 0) + ai3 * b.data.get(12 + 0));
+			dest.data.put(j + 1, ai0 * b.data.get(1) + ai1 * b.data.get(4 + 1)
+					+ ai2 * b.data.get(8 + 1) + ai3 * b.data.get(12 + 1));
+			dest.data.put(j + 2, ai0 * b.data.get(2) + ai1 * b.data.get(4 + 2)
+					+ ai2 * b.data.get(8 + 2) + ai3 * b.data.get(12 + 2));
+			dest.data.put(j + 3, ai0 * b.data.get(3) + ai1 * b.data.get(4 + 3)
+					+ ai2 * b.data.get(8 + 3) + ai3 * b.data.get(12 + 3));
+		}
+	}
+
 	public static Matrix4 multiply(final Matrix4 a, final Matrix4 b) {
 		Matrix4 res = new Matrix4();
-		for (int i = 0; i < 16; i++)
-			res.data.put(i, 0);
-		for (int k = 0; k <= 12; k += 4) {
-			for (int i = 0; i < 4; i++) {
-				for (int j = 0, bCount = 0; j < 4; j++, bCount += 4) {
-					res.data.put(k + i,
-							res.data.get(k + i) + a.data.get(k + j % 4)
-									* b.data.get(bCount + i % 4));
-				}
-			}
-		}
+		multiplyInto(res, a, b);
 		return res;
+	}
+
+	public void multiplyInto(Matrix4 b) {
+		multiplyInto(this, this, b);
 	}
 
 	public static Vector3 multiply(final Matrix4 a, final Vector3 v) {
@@ -98,13 +123,55 @@ public class Matrix4 {
 		return res;
 	}
 
-	// Assumes axis is unit
+	public Matrix4 setAxisAngle(final float angle, final Vector3 a) {
+		final float c = (float) Math.cos(angle);
+		final float s = (float) Math.sin(angle);
+		final float c1 = 1 - c;
+
+		data.put(0, c + a.x * a.x * c1);
+		data.put(1, a.y * a.x * c1 + a.z * s);
+		data.put(2, a.z * a.x * c1 - a.y * s);
+		data.put(3, 0);
+
+		data.put(4, a.x * a.y * c1 - a.z * s);
+		data.put(5, c + a.y * a.y * c1);
+		data.put(6, a.z * a.y * c1 + a.x * s);
+		data.put(7, 0);
+
+		data.put(8, a.x * a.z * c1 + a.y * s);
+		data.put(9, a.y * a.z * c1 - a.x * s);
+		data.put(10, c + a.z * a.z * c1);
+		data.put(11, 0);
+
+		data.put(12, 0);
+		data.put(13, 0);
+		data.put(14, 0);
+		data.put(15, 1);
+		return this;
+	}
+
 	public static Matrix4 translation(final Vector3 a) {
 		Matrix4 res = identity();
 		res.data.put(12, a.x);
 		res.data.put(13, a.y);
 		res.data.put(14, a.z);
 		return res;
+	}
+
+	public static Matrix4 translation(final float x, final float y,
+			final float z) {
+		Matrix4 res = identity();
+		res.data.put(12, x);
+		res.data.put(13, y);
+		res.data.put(14, z);
+		return res;
+	}
+
+	public Matrix4 setTranslation(final float x, final float y, final float z) {
+		data.put(12, x);
+		data.put(13, y);
+		data.put(14, z);
+		return this;
 	}
 
 	public static Matrix4 invert(final Matrix4 m) {
@@ -244,8 +311,7 @@ public class Matrix4 {
 				+ m.data.get(3) * res.data.get(12);
 
 		if (det == 0) {
-			System.out.printf("Invert det=0 mat\n");
-			System.exit(1);
+			throw new IllegalArgumentException("Invert det=0 mat\n");
 		}
 		det = 1.0f / det;
 
@@ -304,8 +370,6 @@ public class Matrix4 {
 
 	public static Matrix4 skewsym(final Vector3 v) {
 		Matrix4 res = new Matrix4();
-		for (int i = 0; i < 16; i++)
-			res.data.put(i, 0);
 		res.data.put(15, 1);
 		res.data.put(1, v.z);
 		res.data.put(2, -v.y);
@@ -332,8 +396,12 @@ public class Matrix4 {
 
 	public Matrix4 copy() {
 		Matrix4 res = new Matrix4();
-		for (int i = 0; i < 16; i++)
-			res.data.put(i, data.get(i));
+		data.position(0);
+		data.get(TMP_ARRAY);
+		data.position(0);
+		res.data.position(0);
+		res.data.put(TMP_ARRAY);
+		res.data.position(0);
 		return res;
 	}
 

@@ -1,12 +1,15 @@
 package com.pi.phys;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import com.pi.Main;
+import com.pi.gl.MatrixStack;
 import com.pi.gl.Shaders;
 import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
@@ -18,27 +21,42 @@ public class AccretionDisk {
 	private static final int PARTICLE_BINS = 100;
 
 	private final float centralMass, spawnRadius, binDR;
-	private final Particle[] particles = new Particle[PARTICLE_COUNT];
 	private final Matrix4 transformation;
 
 	private static final Vector3 MAX_TEMP_INTENSITY = new Vector3(.75f, .75f,
 			.75f);
 
 	private static final float PARTICLE_SIZE = 3;
-	private static final int PARTICLE_RESOLUTION = 10;
-	private static FloatBuffer CIRCLE_VERTICES;
+	private static final int PARTICLE_RESOLUTION = 10;// 10;
+	private static final FloatBuffer circleTmp = BufferUtils
+			.createFloatBuffer(PARTICLE_RESOLUTION * 3 + 3);
+	private static final Vector3[] CIRCLE_DATA = new Vector3[PARTICLE_RESOLUTION + 1];
+
 	static {
-		CIRCLE_VERTICES = BufferUtils
-				.createFloatBuffer(PARTICLE_RESOLUTION * 2 + 2);
-		CIRCLE_VERTICES.put(0);
-		CIRCLE_VERTICES.put(0);
+		int h = 0;
+		CIRCLE_DATA[h++] = new Vector3(0, 0, 0);
+		CIRCLE_DATA[h - 1].write(circleTmp, 0);
 		for (int i = 0; i < PARTICLE_RESOLUTION; i++) {
-			float th = (float) (Math.PI * 2 * i / (PARTICLE_RESOLUTION - 1));
-			CIRCLE_VERTICES.put(PARTICLE_SIZE * (float) Math.cos(th));
-			CIRCLE_VERTICES.put(PARTICLE_SIZE * (float) Math.sin(th));
+			float th = (float) (Math.PI * 2 * i / PARTICLE_RESOLUTION);
+			CIRCLE_DATA[h++] = new Vector3(
+					PARTICLE_SIZE * (float) Math.cos(th), PARTICLE_SIZE
+							* (float) Math.sin(th), 0);
+			CIRCLE_DATA[h - 1].write(circleTmp, i * 3 + 3);
 		}
-		CIRCLE_VERTICES.flip();
+		circleTmp.flip();
 	}
+
+	// Particle states
+	private static final int VERTEX_BYTE_STRIDE = 4 + (3 * 4);
+	private static final int VERTEX_FLOAT_STRIDE = VERTEX_BYTE_STRIDE / 4;
+	private static final int PARTICLE_BYTE_STRIDE = (PARTICLE_RESOLUTION + 1)
+			* VERTEX_BYTE_STRIDE;
+	private static final int PARTICLE_FLOAT_STRIDE = (PARTICLE_RESOLUTION + 1)
+			* VERTEX_FLOAT_STRIDE;
+	private final Vector3[] particleVel;
+	private final ByteBuffer particleState;
+	private final FloatBuffer particleFloatState;
+	private final IntBuffer particleIndices;
 
 	public AccretionDisk(final float centralMass, final float spawnRadius,
 			final Vector3 center, Vector3 normal) {
@@ -67,9 +85,32 @@ public class AccretionDisk {
 		this.transformation = Matrix4.multiply(rotation,
 				Matrix4.translation(center));
 
-		for (int i = 0; i < particles.length; i++) {
-			particles[i] = new Particle();
+		particleVel = new Vector3[PARTICLE_COUNT];
+		particleState = BufferUtils.createByteBuffer(PARTICLE_COUNT
+				* PARTICLE_BYTE_STRIDE);
+		particleState.limit(particleState.capacity());
+		particleFloatState = particleState.asFloatBuffer();
+		particleFloatState.limit(particleFloatState.capacity());
+
+		particleIndices = BufferUtils.createIntBuffer(PARTICLE_RESOLUTION * 3
+				* PARTICLE_COUNT);
+		particleIndices.limit(particleIndices.capacity());
+
+		final byte[] blank = new byte[PARTICLE_BYTE_STRIDE];
+		for (int i = 0; i < PARTICLE_COUNT; i++) {
+			particleVel[i] = new Vector3(0, 0, 0);
+			particleState.put(blank);
+			final int baseVertex = (PARTICLE_RESOLUTION + 1) * i;
+			for (int j = 0; j < PARTICLE_RESOLUTION; j++) {
+				particleIndices.put(baseVertex);
+				if (j == 0)
+					particleIndices.put(baseVertex + PARTICLE_RESOLUTION);
+				else
+					particleIndices.put(baseVertex + j);
+				particleIndices.put(baseVertex + j + 1);
+			}
 		}
+		particleIndices.flip();
 
 		update();
 	}
@@ -82,9 +123,12 @@ public class AccretionDisk {
 			backBins[i] = 0;
 
 		final float dt = (float) Main.getDelta();
-		for (int i = 0; i < particles.length; i++) {
-			float pos2 = Vector3.mag2(particles[i].pos);
-			float vel2 = Vector3.mag2(particles[i].vel);
+		for (int i = 0; i < PARTICLE_COUNT; i++) {
+			Vector3 posVector = new Vector3(particleFloatState,
+					PARTICLE_FLOAT_STRIDE * i + 1);
+
+			float pos2 = Vector3.mag2(posVector);
+			float vel2 = Vector3.mag2(particleVel[i]);
 			if (pos2 < EVENT_HORIZON_RAD_2 * centralMass
 					|| vel2 > PARTICLE_MAX_VEL_2) {
 				// Respawn
@@ -95,13 +139,13 @@ public class AccretionDisk {
 						* (radiusVariance * 0.2f + 0.9f);
 				float cos = (float) Math.cos(spawnAngle);
 				float sin = (float) Math.sin(spawnAngle);
-				particles[i].pos = new Vector3(cos * spawnDistance, sin
+				posVector = new Vector3(cos * spawnDistance, sin
 						* spawnDistance, spawnRadius * 0.025f
 						* ((float) Math.random() * 2 - 1));
 				pos2 = spawnDistance * spawnDistance;
 				float vel = (float) (Math.sqrt(spawnDistance * centralMass
 						/ pos2) * (Math.random() * 0.2f + 0.9f));
-				particles[i].vel = new Vector3(-sin * vel, cos * vel, 0);
+				particleVel[i] = new Vector3(-sin * vel, cos * vel, 0);
 			}
 			float pos = (float) Math.sqrt(pos2);
 
@@ -119,13 +163,20 @@ public class AccretionDisk {
 
 			// Integrate particle
 			float effectiveDt = dt;// dt / spawnRadius * pos;
-			Vector3.addto(particles[i].vel, particles[i].pos, -dt * centralMass
-					/ pos2 / pos);
-			Vector3.addto(particles[i].pos, particles[i].vel, effectiveDt);
+			Vector3.addto(particleVel[i], posVector, -dt * centralMass / pos2
+					/ pos);
+			Vector3.addto(posVector, particleVel[i], effectiveDt);
+			posVector.write(particleFloatState, PARTICLE_FLOAT_STRIDE * i + 1);
 
 			float mix = (float) Math.pow(binValue * 1E3 / PARTICLE_COUNT, 0.5);
-			particles[i].color = Vector3.lincom(new Vector3(1, 0, 0), 1 - mix,
+
+			final int colorOffset = PARTICLE_BYTE_STRIDE * i;
+			final Vector3 color = Vector3.lincom(new Vector3(1, 0, 0), 1 - mix,
 					MAX_TEMP_INTENSITY, mix);
+			particleState.put(colorOffset, (byte) (color.x * 255));
+			particleState.put(colorOffset + 1, (byte) (color.y * 255));
+			particleState.put(colorOffset + 2, (byte) (color.z * 255));
+			particleState.put(colorOffset + 3, (byte) (0.1f * 255));
 		}
 
 		float[] tmp = frontBins;
@@ -133,54 +184,80 @@ public class AccretionDisk {
 		backBins = tmp;
 	}
 
-	private int vboHandle = -1;
+	private void propogateInformation(Matrix4 billboard) {
+		for (int i = 0; i < particleVel.length; i++) {
+			Vector3 posVector = new Vector3(particleFloatState,
+					PARTICLE_FLOAT_STRIDE * i + 1);
+			byte[] color = new byte[4];
+			particleState.position(PARTICLE_BYTE_STRIDE * i);
+			particleState.get(color);
+			for (int j = 0; j < PARTICLE_RESOLUTION + 1; j++) {
+				Vector3.add(posVector,
+						Matrix4.multiply(billboard, CIRCLE_DATA[j])).write(
+						particleFloatState,
+						1 + (PARTICLE_FLOAT_STRIDE * i)
+								+ (VERTEX_FLOAT_STRIDE * j));
+				particleState.position((PARTICLE_BYTE_STRIDE * i)
+						+ (VERTEX_BYTE_STRIDE * j));
+				particleState.put(color);
+			}
+		}
+	}
+
+	private int iboHandle = -1;
 
 	public void render() {
-		if (vboHandle == -1) {
-			vboHandle = GL15.glGenBuffers();
-			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
-			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, CIRCLE_VERTICES,
+		if (iboHandle == -1) {
+			iboHandle = GL15.glGenBuffers();
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, iboHandle);
+			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, particleIndices,
 					GL15.GL_STATIC_DRAW);
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		}
 
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
-		GL11.glPushMatrix();
-		GL11.glMultMatrix(transformation.data);
+		MatrixStack.glPushMatrix();
+		MatrixStack.glMultMatrix(transformation);
 		Shaders.ACCRETION_DISK.use();
+
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		Matrix4 iRot = new Matrix4();
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, iRot.data);
+		Matrix4 iRot = MatrixStack.getModelView().copy();
 		iRot = Matrix4.transpose(Matrix4.mat3(iRot));
+		propogateInformation(iRot);
 
-		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
-		GL11.glVertexPointer(2, GL11.GL_FLOAT, 0, 0);
+		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY | GL11.GL_COLOR_ARRAY);
+		particleState.position(0);
+		GL11.glInterleavedArrays(GL11.GL_C4UB_V3F, 0, particleState);
 
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, iboHandle);
+		MatrixStack.commit();
 		// First render with the depth mask disabled, but color mask enabled
 		GL11.glDepthMask(false);
-		renderParticles(iRot);
+		renderParticles();
 		GL11.glDepthMask(true);
 		GL11.glColorMask(false, false, false, false);
-		renderParticles(iRot);
+		renderParticles();
 
-		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
+		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY | GL11.GL_COLOR_ARRAY);
 		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glPopMatrix();
+		MatrixStack.glPopMatrix();
 		GL11.glPopAttrib();
 	}
 
-	private void renderParticles(Matrix4 iRot) {
-		for (int i = 0; i < particles.length; i++) {
-			GL11.glColor4f(particles[i].color.x, particles[i].color.y,
-					particles[i].color.z, 0.1f);
-			GL11.glPushMatrix();
-			GL11.glTranslatef(particles[i].pos.x, particles[i].pos.y,
-					particles[i].pos.z);
-			GL11.glMultMatrix(iRot.data);
-
-			GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, PARTICLE_RESOLUTION + 1);
-			GL11.glPopMatrix();
-		}
+	private void renderParticles() {
+		// for (int i = 0; i < particleVel.length; i++) {
+		// MatrixStack.glPushMatrix();
+		// Vector3 pos = new Vector3(particleFloatState, PARTICLE_FLOAT_STRIDE
+		// * i + 1);
+		// // MatrixStack.glTranslatef(pos.x, pos.y, pos.z);
+		// MatrixStack.commitModelview();
+		//
+		// GL11.glDrawArrays(GL11.GL_TRIANGLE_FAN, 0, PARTICLE_RESOLUTION + 1);
+		// MatrixStack.glPopMatrix();
+		// }
+		GL11.glDrawElements(GL11.GL_TRIANGLES, particleIndices.limit(),
+				GL11.GL_UNSIGNED_INT, 0);
 	}
 }
