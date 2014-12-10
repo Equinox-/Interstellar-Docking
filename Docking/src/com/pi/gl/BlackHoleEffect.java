@@ -65,7 +65,6 @@ public class BlackHoleEffect {
 		warped[1] /= warped[3];
 		warped[2] /= warped[3];
 		depthBuffer = (0.5f * warped[2] + 0.5f);
-		System.out.println(depthBuffer);
 
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());

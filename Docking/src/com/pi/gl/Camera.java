@@ -10,11 +10,13 @@ import com.pi.math.Vector3;
 
 public class Camera {
 	public float offset;
-	private Matrix4 pose;
+	public Matrix4 pose;
+	public static Camera curr;
 
 	public Camera() {
 		offset = -50.0f;
 		pose = Matrix4.identity();
+		curr = this;
 	}
 
 	private Vector3 prevCamPos;
@@ -81,5 +83,9 @@ public class Camera {
 	public void glApply() {
 		GL11.glTranslatef(0, 0, offset);
 		GL11.glMultMatrix(pose.data);
+	}
+
+	public void glRotateInverse() {
+		GL11.glMultMatrix(Matrix4.transpose(Matrix4.mat3(pose)).data);
 	}
 }

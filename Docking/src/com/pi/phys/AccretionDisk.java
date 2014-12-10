@@ -3,7 +3,9 @@ package com.pi.phys;
 import org.lwjgl.opengl.GL11;
 
 import com.pi.Main;
+import com.pi.gl.Camera;
 import com.pi.gl.Shaders;
+import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
 
 public class AccretionDisk {
@@ -51,7 +53,7 @@ public class AccretionDisk {
 			}
 			// Integrate particle
 			float pos = (float) Math.sqrt(pos2);
-			float effectiveDt = dt;//dt / spawnRadius * pos;
+			float effectiveDt = dt;// dt / spawnRadius * pos;
 			Vector3.addto(particles[i].vel, particles[i].pos, -dt * centralMass
 					/ pos2 / pos);
 			Vector3.addto(particles[i].pos, particles[i].vel, effectiveDt);
@@ -61,14 +63,26 @@ public class AccretionDisk {
 	public void render() {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(center.x, center.y, center.z);
-		Shaders.noProgram();
+		Shaders.ACCRETION_DISK.use();
 		GL11.glPointSize(25);
 		GL11.glEnable(GL11.GL_BLEND);
+//		Matrix4 iRot = Matrix4.transpose(Matrix4.mat3(Camera.curr.pose));
 		GL11.glBegin(GL11.GL_POINTS);
 		GL11.glColor4f(1, 0, 0, 0.1f);
+		final float psize = 25f;
 		for (int i = 0; i < particles.length; i++) {
+			GL11.glPushMatrix();
+//			GL11.glTranslatef(particles[i].pos.x, particles[i].pos.y,
+//					particles[i].pos.z);
+//			GL11.glMultMatrix(iRot.data);
+//			GL11.glVertex2f(-psize, -psize);
+			GL11.glVertex2f(0, 0);
+//			GL11.glVertex2f(psize, -psize);
+//			GL11.glVertex2f(psize, psize);
+//			GL11.glVertex2f(-psize, psize);
 			GL11.glVertex3f(particles[i].pos.x, particles[i].pos.y,
 					particles[i].pos.z);
+			GL11.glPopMatrix();
 		}
 		GL11.glEnd();
 		GL11.glDisable(GL11.GL_BLEND);

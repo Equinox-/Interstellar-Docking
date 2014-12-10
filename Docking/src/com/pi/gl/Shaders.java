@@ -11,7 +11,8 @@ import org.lwjgl.opengl.GL20;
 import com.pi.Main;
 
 public enum Shaders {
-	SHIP("ship"), PLANET("planet"), ATMOSPHERE("atm"), BLACK_HOLE("bhole");
+	SHIP("ship"), PLANET("planet"), ATMOSPHERE("atm"), BLACK_HOLE("bhole"), ACCRETION_DISK(
+			"adisk");
 	private final String fname;
 	private int program;
 
