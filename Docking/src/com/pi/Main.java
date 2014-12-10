@@ -14,9 +14,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 import com.pi.gl.BlackHoleEffect;
 import com.pi.gl.Camera;
-import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
-import com.pi.model.Texture;
 import com.pi.phys.AccretionDisk;
 import com.pi.phys.CelestialBody;
 import com.pi.phys.Ship;
@@ -66,7 +64,7 @@ public class Main {
 
 	private Vector3 bhole = Vector3
 			.multiply(new Vector3(-1000, 1000, -1000), 0);
-	private BlackHoleEffect effect = new BlackHoleEffect(bhole, 200, 100);
+	private BlackHoleEffect effect = new BlackHoleEffect(bhole, 100);
 	private AccretionDisk disk = new AccretionDisk(1000, 100, bhole,
 			new Vector3(1, 0, 0));
 
@@ -74,15 +72,15 @@ public class Main {
 		camera = new Camera();
 		camera.offset = -3;
 
-//		{
-//			planet = new CelestialBody(1000, 1.075f, 1200, new Vector3(-1000,
-//					-1000, -1000), new Texture(new File(dataDir,
-//					"tex/ice_planet.png")), new Texture(new File(dataDir,
-//					"tex/ice_planet.spec.png")));
-//		}
-//
-//		endurance = new Ship(new File(dataDir, "endurance.pack"));
-//		ranger = new Ship(new File(dataDir, "lander.pack"));
+		// {
+		// planet = new CelestialBody(1000, 1.075f, 1200, new Vector3(-1000,
+		// -1000, -1000), new Texture(new File(dataDir,
+		// "tex/ice_planet.png")), new Texture(new File(dataDir,
+		// "tex/ice_planet.spec.png")));
+		// }
+		//
+		// endurance = new Ship(new File(dataDir, "endurance.pack"));
+		// ranger = new Ship(new File(dataDir, "lander.pack"));
 	}
 
 	private void init() {
@@ -130,7 +128,7 @@ public class Main {
 			GL11.glClearDepth(effect.depthBuffer);
 			windowResized(Display.getWidth(), Display.getHeight(), 1);
 			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-//			doRender();
+			// doRender();
 
 			Display.update();
 
@@ -149,11 +147,11 @@ public class Main {
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
 		disk.render();
 
-//		Shaders.SHIP.use();
-//		endurance.render();
-//		ranger.render();
+		// Shaders.SHIP.use();
+		// endurance.render();
+		// ranger.render();
 
-//		planet.render();
+		// planet.render();
 		GL11.glPopMatrix();
 	}
 
@@ -165,38 +163,38 @@ public class Main {
 		disk.update();
 		camera.process();
 
-//		if (control == null) {
-//			thrusterBasePower = 10;
-//			control = ranger;
-//		}
-//
-//		control.zeroThrusters();
-//		for (int i = 0; i < GROUP_CTL.length; i++)
-//			if (Keyboard.isKeyDown(GROUP_CTL[i]))
-//				control.addGroup(i, thrusterBasePower);
-//
-//		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-//			control.addWorldThrust(new Vector3(thrusterBasePower, 0, 0));
-//		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-//			control.addWorldThrust(new Vector3(-thrusterBasePower, 0, 0));
-//		}
-//
-//		if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
-//			if (!swapLastState) {
-//				if (control == endurance) {
-//					control = ranger;
-//					thrusterBasePower = 10;
-//				} else if (control == ranger) {
-//					control = endurance;
-//					thrusterBasePower = 1000;
-//				}
-//			}
-//			swapLastState = true;
-//		} else
-//			swapLastState = false;
-//
-//		endurance.update();
-//		ranger.update();
+		// if (control == null) {
+		// thrusterBasePower = 10;
+		// control = ranger;
+		// }
+		//
+		// control.zeroThrusters();
+		// for (int i = 0; i < GROUP_CTL.length; i++)
+		// if (Keyboard.isKeyDown(GROUP_CTL[i]))
+		// control.addGroup(i, thrusterBasePower);
+		//
+		// if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+		// control.addWorldThrust(new Vector3(thrusterBasePower, 0, 0));
+		// } else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+		// control.addWorldThrust(new Vector3(-thrusterBasePower, 0, 0));
+		// }
+		//
+		// if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
+		// if (!swapLastState) {
+		// if (control == endurance) {
+		// control = ranger;
+		// thrusterBasePower = 10;
+		// } else if (control == ranger) {
+		// control = endurance;
+		// thrusterBasePower = 1000;
+		// }
+		// }
+		// swapLastState = true;
+		// } else
+		// swapLastState = false;
+		//
+		// endurance.update();
+		// ranger.update();
 	}
 
 	public static void main(String[] args) throws LWJGLException, IOException {

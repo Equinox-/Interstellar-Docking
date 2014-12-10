@@ -13,20 +13,18 @@ import com.pi.math.Matrix4;
 import com.pi.math.Vector3;
 
 public class BlackHoleEffect {
-	private final float powerStrength;
 	private final float powerRadius;
 	private float[] position;
 
 	public RenderTexture renderTexture;
 
-	public BlackHoleEffect(Vector3 position, float strength, float radius) {
+	public BlackHoleEffect(Vector3 position, float radius) {
 		this.position = new float[4];
 		this.position[0] = position.x;
 		this.position[1] = position.y;
 		this.position[2] = position.z;
 		this.position[3] = 1;
 
-		this.powerStrength = strength;
 		this.powerRadius = radius;
 	}
 
@@ -36,8 +34,6 @@ public class BlackHoleEffect {
 			renderTexture.generate();
 
 			Shaders.BLACK_HOLE.use();
-			GL20.glUniform1f(Shaders.BLACK_HOLE.uniform("powerStrength"),
-					powerStrength);
 			GL20.glUniform1f(Shaders.BLACK_HOLE.uniform("powerRadius"),
 					powerRadius);
 			GL20.glUniform1i(Shaders.BLACK_HOLE.uniform("color"), 0);
