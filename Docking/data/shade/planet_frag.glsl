@@ -1,7 +1,6 @@
 #version 120
 #define LIGHT_SOURCES 1
 
-varying vec4 varyingColour;
 varying vec3 varyingNormal;
 varying vec4 varyingVertex;
 
@@ -13,8 +12,8 @@ float surface3(vec3 v) {
 }
 
 void main() {
-	vec3 vertexPosition = (gl_ModelViewMatrix * varyingVertex).xyz;
-	vec3 surfaceNormal = normalize((gl_NormalMatrix * varyingNormal).xyz);
+	vec3 vertexPosition = varyingVertex.xyz;
+	vec3 surfaceNormal = normalize(varyingNormal);
 
 	vec3 atmVec = cross(vertexPosition, surfaceNormal);
 	float atmPassed = length(atmVec);

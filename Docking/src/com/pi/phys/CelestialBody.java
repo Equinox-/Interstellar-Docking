@@ -51,21 +51,22 @@ public class CelestialBody {
 		MatrixStack.glRotatef((float) Main.getTime() * 360.0f / period, 0, 1, 0);
 		{
 			Shaders.PLANET.use();
-			MatrixStack.commit();
 			
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			diffuse.bind();
 			GL13.glActiveTexture(GL13.GL_TEXTURE1);
 			specular.bind();
-			GL11.glScalef(radius, radius, radius);
+			MatrixStack.glScalef(radius, radius, radius);
+			MatrixStack.commit();
 			sphere.render();
 			if (atmosphereScale > 1) {
 				Shaders.noProgram();
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glDisable(GL11.GL_LIGHTING);
 				Shaders.ATMOSPHERE.use();
-				GL11.glScalef(atmosphereScale, atmosphereScale, atmosphereScale);
+				MatrixStack.glScalef(atmosphereScale, atmosphereScale, atmosphereScale);
+				MatrixStack.commit();
 				sphere.render();
 				GL11.glEnable(GL11.GL_LIGHTING);
 				GL11.glDisable(GL11.GL_BLEND);

@@ -18,10 +18,9 @@ public class AccretionDisk {
 	private static final float EVENT_HORIZON_RAD_2 = 1;
 	private static final float PARTICLE_MAX_VEL_2 = 100;
 	private static final int PARTICLE_COUNT = 10000;
-	private static final int PARTICLE_BINS = 100;
 
-	private final float centralMass, spawnRadius, binDR;
-	private final Matrix4 transformation;
+	private static final int PARTICLE_RADII_BINS = 100;
+	private static final int PARTICLE_ANGULAR_BINS = 10;
 
 	private static final Vector3 MAX_TEMP_INTENSITY = new Vector3(.75f, .75f,
 			.75f);
@@ -58,11 +57,20 @@ public class AccretionDisk {
 	private final FloatBuffer particleFloatState;
 	private final IntBuffer particleIndices;
 
+	private final float centralMass;
+	public final float spawnRadius;
+	private final float binDR, binDA;
+	private final Matrix4 transformation;
+
+	private float[][] frontBins = new float[PARTICLE_RADII_BINS][PARTICLE_ANGULAR_BINS],
+			backBins = new float[PARTICLE_RADII_BINS][PARTICLE_ANGULAR_BINS];
+
 	public AccretionDisk(final float centralMass, final float spawnRadius,
 			final Vector3 center, Vector3 normal) {
 		this.centralMass = centralMass;
 		this.spawnRadius = spawnRadius;
-		this.binDR = spawnRadius * 2.0f / PARTICLE_BINS;
+		this.binDR = spawnRadius * 2.0f / PARTICLE_RADII_BINS;
+		this.binDA = (float) Math.PI * 2.0f / PARTICLE_ANGULAR_BINS;
 
 		normal = Vector3.normalize(normal); // Don't trust the user
 		Vector3 cotangent = Vector3.normalize(Vector3.cross(normal,
@@ -115,12 +123,10 @@ public class AccretionDisk {
 		update();
 	}
 
-	private float[] frontBins = new float[PARTICLE_BINS],
-			backBins = new float[PARTICLE_BINS];
-
 	public void update() {
-		for (int i = 0; i < PARTICLE_BINS; i++)
-			backBins[i] = 0;
+		for (int i = 0; i < PARTICLE_RADII_BINS; i++)
+			for (int j = 0; j < PARTICLE_ANGULAR_BINS; j++)
+				backBins[i][j] = 0;
 
 		final float dt = (float) Main.getDelta();
 		for (int i = 0; i < PARTICLE_COUNT; i++) {
@@ -152,13 +158,28 @@ public class AccretionDisk {
 			// Add to density bins
 			float binValue = 0;
 			float bin = pos / binDR;
+			float aBin = (float) ((Math.atan2(posVector.y, posVector.x) + Math.PI) / binDA);
 			int lBin = (int) Math.floor(bin);
-			if (lBin < PARTICLE_BINS - 1 && lBin >= 0) {
-				backBins[lBin] += (bin - lBin);
-				backBins[lBin + 1] += 1 - (bin - lBin);
-				binValue = frontBins[lBin] * (1 - (bin - lBin))
-						/ (lBin * binDR) + frontBins[lBin + 1] * (bin - lBin)
-						/ (lBin * binDR + binDR);
+			int lABin = (int) Math.floor(aBin) % PARTICLE_ANGULAR_BINS, lBBin = (lABin + 1)
+					% PARTICLE_ANGULAR_BINS;
+			if (lBin < PARTICLE_RADII_BINS - 1 && lBin >= 0) {
+				backBins[lBin][lABin] += (bin - lBin) * (aBin - lABin);
+				backBins[lBin + 1][lABin] += (1 - (bin - lBin))
+						* (aBin - lABin);
+
+				backBins[lBin][lBBin] += (bin - lBin) * (1 - aBin + lABin);
+				backBins[lBin + 1][lBBin] += (1 - (bin - lBin))
+						* (1 - aBin + lABin);
+
+				binValue = 0;
+				binValue += frontBins[lBin][lABin] * (bin - lBin)
+						/ (lBin * binDR * binDA) * (aBin - lABin);
+				binValue += frontBins[lBin + 1][lABin] * (1 - (bin - lBin))
+						/ ((lBin + 1) * binDR * binDA) * (aBin - lABin);
+				binValue += frontBins[lBin][lBBin] * (bin - lBin)
+						/ (lBin * binDR * binDA) * (1 - aBin + lABin);
+				binValue += frontBins[lBin + 1][lBBin] * (1 - (bin - lBin))
+						* (1 - aBin + lABin) / ((lBin + 1) * binDR * binDA);
 			}
 
 			// Integrate particle
@@ -168,7 +189,7 @@ public class AccretionDisk {
 			Vector3.addto(posVector, particleVel[i], effectiveDt);
 			posVector.write(particleFloatState, PARTICLE_FLOAT_STRIDE * i + 1);
 
-			float mix = (float) Math.pow(binValue * 1E3 / PARTICLE_COUNT, 0.5);
+			float mix = (float) Math.pow(binValue * 4E3 / PARTICLE_COUNT, 0.5);
 
 			final int colorOffset = PARTICLE_BYTE_STRIDE * i;
 			final Vector3 color = Vector3.lincom(new Vector3(1, 0, 0), 1 - mix,
@@ -179,7 +200,7 @@ public class AccretionDisk {
 			particleState.put(colorOffset + 3, (byte) (0.1f * 255));
 		}
 
-		float[] tmp = frontBins;
+		float[][] tmp = frontBins;
 		frontBins = backBins;
 		backBins = tmp;
 	}
@@ -212,8 +233,8 @@ public class AccretionDisk {
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, iboHandle);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, particleIndices,
 					GL15.GL_STATIC_DRAW);
-			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		}
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
 		GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
 		MatrixStack.glPushMatrix();

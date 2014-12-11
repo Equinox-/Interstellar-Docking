@@ -17,6 +17,7 @@ import com.pi.gl.Camera;
 import com.pi.gl.MatrixStack;
 import com.pi.gl.Shaders;
 import com.pi.math.Vector3;
+import com.pi.model.Texture;
 import com.pi.phys.AccretionDisk;
 import com.pi.phys.CelestialBody;
 import com.pi.phys.Ship;
@@ -53,7 +54,7 @@ public class Main {
 		final float tanV = (float) Math.tan(HORIZ_FOV * Math.PI / 360.0);
 		final float aspect = height / (float) width;
 		MatrixStack.glFrustum(-tanV * near, tanV * near, -tanV * aspect * near,
-				tanV * aspect * near, near, 10000);
+				tanV * aspect * near, near, near + 10000);
 	}
 
 	private CelestialBody planet;
@@ -62,32 +63,30 @@ public class Main {
 
 	private Camera camera;
 
-	private Vector3 bhole = new Vector3(0, 0, 0);// new Vector3(-1000, 1000,
-													// -1000);
+	private Vector3 bhole = new Vector3(1000, 1000, -1000);
 	private BlackHoleEffect effect = new BlackHoleEffect(bhole, 100);
-	private AccretionDisk disk = new AccretionDisk(1000, 100, bhole,
+	private AccretionDisk disk = new AccretionDisk(5000, 100, bhole,
 			new Vector3(1, 0, 0));
 
 	private void load() throws IOException {
 		camera = new Camera();
 		camera.offset = -3;
 
-		// {
-		// planet = new CelestialBody(1000, 1.075f, 1200, new Vector3(-1000,
-		// -1000, -1000), new Texture(new File(dataDir,
-		// "tex/ice_planet.png")), new Texture(new File(dataDir,
-		// "tex/ice_planet.spec.png")));
-		// }
-		//
-//		endurance = new Ship(new File(dataDir, "endurance.pack"));
-		// ranger = new Ship(new File(dataDir, "lander.pack"));
+		{
+			planet = new CelestialBody(1000, 1.075f, 1200, new Vector3(-1000,
+					-1000, -1000), new Texture(new File(dataDir,
+					"tex/ice_planet.png")), new Texture(new File(dataDir,
+					"tex/ice_planet.spec.png")));
+		}
+
+		endurance = new Ship(new File(dataDir, "endurance.pack"));
+		ranger = new Ship(new File(dataDir, "lander.pack"));
 	}
 
 	private void init() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		// GL11.glEnable(GL11.GL_LIGHTING);
-		// GL11.glEnable(GL11.GL_LIGHT0);
-		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_LIGHT0);
 		// GL11.glCullFace(GL11.GL_BACK);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -119,11 +118,25 @@ public class Main {
 		int frames = 0;
 		while (!Display.isCloseRequested()) {
 
-			windowResized(Display.getWidth(), Display.getHeight(), 1);
-			// effect.preRender();
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			doRender();
-			// effect.postRender();
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			{// Accretion disk rendering
+				windowResized(Display.getWidth(), Display.getHeight(),
+						Math.max(10, effect.depth / 2 - disk.spawnRadius));
+				effect.preRender();
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT
+						| GL11.GL_DEPTH_BUFFER_BIT);
+				MatrixStack.glLoadIdentity();
+				camera.glApply();
+				MatrixStack.glPushMatrix();
+				disk.render();
+				MatrixStack.glPopMatrix();
+				effect.postRender();
+			}
+			{// Old stuff
+				GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+				windowResized(Display.getWidth(), Display.getHeight(), 1);
+				doRender();
+			}
 
 			Display.update();
 
@@ -146,13 +159,11 @@ public class Main {
 		camera.glApply();
 		MatrixStack.glPushMatrix();
 		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, LIGHT0_POSITION);
-		disk.render();
 
-//		Shaders.SHIP.use();
-//		endurance.render();
-		// ranger.render();
+		endurance.render();
+		ranger.render();
 
-		// planet.render();
+		planet.render();
 		MatrixStack.glPopMatrix();
 	}
 
@@ -164,38 +175,38 @@ public class Main {
 		disk.update();
 		camera.process();
 
-		// if (control == null) {
-		// thrusterBasePower = 10;
-		// control = ranger;
-		// }
-		//
-		// control.zeroThrusters();
-		// for (int i = 0; i < GROUP_CTL.length; i++)
-		// if (Keyboard.isKeyDown(GROUP_CTL[i]))
-		// control.addGroup(i, thrusterBasePower);
-		//
-		// if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
-		// control.addWorldThrust(new Vector3(thrusterBasePower, 0, 0));
-		// } else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
-		// control.addWorldThrust(new Vector3(-thrusterBasePower, 0, 0));
-		// }
-		//
-		// if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
-		// if (!swapLastState) {
-		// if (control == endurance) {
-		// control = ranger;
-		// thrusterBasePower = 10;
-		// } else if (control == ranger) {
-		// control = endurance;
-		// thrusterBasePower = 1000;
-		// }
-		// }
-		// swapLastState = true;
-		// } else
-		// swapLastState = false;
-		//
-		// endurance.update();
-		// ranger.update();
+		if (control == null) {
+			thrusterBasePower = 10;
+			control = ranger;
+		}
+
+		control.zeroThrusters();
+		for (int i = 0; i < GROUP_CTL.length; i++)
+			if (Keyboard.isKeyDown(GROUP_CTL[i]))
+				control.addGroup(i, thrusterBasePower);
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_B)) {
+			control.addWorldThrust(new Vector3(thrusterBasePower, 0, 0));
+		} else if (Keyboard.isKeyDown(Keyboard.KEY_N)) {
+			control.addWorldThrust(new Vector3(-thrusterBasePower, 0, 0));
+		}
+
+		if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
+			if (!swapLastState) {
+				if (control == endurance) {
+					control = ranger;
+					thrusterBasePower = 10;
+				} else if (control == ranger) {
+					control = endurance;
+					thrusterBasePower = 1000;
+				}
+			}
+			swapLastState = true;
+		} else
+			swapLastState = false;
+
+		endurance.update();
+		ranger.update();
 	}
 
 	public static void main(String[] args) throws LWJGLException, IOException {

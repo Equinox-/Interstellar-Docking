@@ -63,8 +63,8 @@ public class RenderTexture {
 					GL14.GL_TEXTURE_COMPARE_MODE, GL14.GL_COMPARE_R_TO_TEXTURE);
 			GL11.glTexParameteri(GL11.GL_TEXTURE_2D,
 					GL14.GL_TEXTURE_COMPARE_FUNC, GL11.GL_LEQUAL);
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL30.GL_DEPTH24_STENCIL8,
-					renderWidth, renderHeight, 0, GL30.GL_DEPTH24_STENCIL8,
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT,
+					renderWidth, renderHeight, 0, GL11.GL_DEPTH_COMPONENT,
 					GL11.GL_UNSIGNED_INT, (ByteBuffer) null);
 		}
 
@@ -76,6 +76,7 @@ public class RenderTexture {
 			GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER,
 					GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthTexture,
 					0);
+		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 	}
 
 	public void bindRender() {

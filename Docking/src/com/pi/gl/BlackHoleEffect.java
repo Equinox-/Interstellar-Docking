@@ -106,7 +106,7 @@ public class BlackHoleEffect {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboHandle);
 
 		GL11.glInterleavedArrays(GL11.GL_T2F_V3F, 0, 0);
-		GL11.glDrawArrays(GL11.GL_QUADS, 0, 1);
+		GL11.glDrawArrays(GL11.GL_QUADS, 0, 4);
 
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY

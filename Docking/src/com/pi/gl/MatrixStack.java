@@ -8,7 +8,7 @@ import com.pi.math.Vector3;
 public class MatrixStack {
 	public static Matrix4 projection = Matrix4.identity();
 
-	private static Matrix4 tmpTranslation = Matrix4.identity(),
+	private static Matrix4 tmpScale = Matrix4.identity(),
 			tmpRotation = Matrix4.identity();
 
 	private static int modelViewStackHead = 0;
@@ -46,6 +46,13 @@ public class MatrixStack {
 				* z + m.data.get(14));
 		m.data.put(15, m.data.get(3) * x + m.data.get(7) * y + m.data.get(11)
 				* z + m.data.get(15));
+	}
+	
+	public static void glScalef(float x, float y, float z) {
+		tmpScale.data.put(0,x);
+		tmpScale.data.put(5,y);
+		tmpScale.data.put(10,z);
+		glMultMatrix(tmpScale);
 	}
 
 	public static void glRotatef(float angle, float x, float y, float z) {
